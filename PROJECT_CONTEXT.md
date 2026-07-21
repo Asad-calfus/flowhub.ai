@@ -5,7 +5,11 @@ next phase can start without re-reading the whole repo. It's a snapshot/index, n
 authoritative source for any topic - follow the links for detail, and treat this doc as
 possibly stale on anything it doesn't link to a source file for.
 
-**Last updated**: 2026-07-21, after `docs/changelog/0004`. Current commit: `cbc4b10`.
+**Last updated**: 2026-07-21, after `docs/changelog/0006`.
+
+**Roadmap**: see `docs/project_plan.md` for the full 10-phase plan, MVP scope, deferred
+features, and the "changes from the original plan" record. This doc is current status; that
+one is where we're headed.
 
 ## The product (fictional)
 
@@ -73,18 +77,19 @@ LLM run is expected to improve most fields meaningfully; that hasn't been measur
 always dry-runs unless `--live` is passed explicitly; `--live` prints a cost estimate
 (`src/classification/pricing.py`) and asks for confirmation. Recommended model: `gpt-4o-mini`.
 
-### Repo structure tidy (`docs/changelog/0004-*.md`)
+### Repo structure tidy (`docs/changelog/0004-*.md`, `0006-*.md`)
 
 `scripts/` split into `data/` and `pipeline/`; `docs/` split into `dataset/` and
-`changelog/`; `tests/` mirrors `src/` (`tests/classification/`). No `pyproject.toml`/CI yet -
-explicitly deferred, not an oversight. Current full layout is in the root `README.md`
-"Project structure" section.
+`changelog/`; `tests/` mirrors `src/` (`tests/classification/`). This doc lives at
+`PROJECT_CONTEXT.md` (root, moved from `docs/` in 0006 to sit alongside `README.md`/
+`CHANGELOG.md`). No `pyproject.toml`/CI yet - explicitly deferred, not an oversight. Current
+full layout is in the root `README.md` "Project structure" section.
 
 ## Process conventions in effect (see memory, not just this doc)
 
 - A dated doc under `docs/changelog/` after every notable change, indexed in `CHANGELOG.md`.
-- Regular, scoped git commits (one per notable change) - currently 4 commits on `main`,
-  pushed to `origin` (`github.com/Asad-calfus/flowhub.ai`).
+- Regular, scoped git commits (one per notable change) on `main`, pushed to `origin`
+  (`github.com/Asad-calfus/flowhub.ai`).
 - Generated/disposable files never committed: `.venv/`, `__pycache__/`, `.pytest_cache/`,
   `results/cache/`, `.env` (all in `.gitignore`).
 - Real API keys only ever in `.env` (gitignored), never `.env.example`. Live LLM calls are
