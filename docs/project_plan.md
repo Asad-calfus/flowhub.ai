@@ -65,21 +65,21 @@ roadmap above; revisit only after phase 10.
 Evaluation-label fields — `feedback_type`, `category`, `product_module`, `sentiment`,
 `urgency`, `theme_hint`, `related_context_id`, `is_gold_label`, `label_source` — are never
 passed as input to any classifier, embedder, or retrieval step. Each phase enforces this in
-code (see `src/classification/schemas.py::assert_no_leakage` for the phase 2 pattern) and adds
+code (see `backend/src/classification/schemas.py::assert_no_leakage` for the phase 2 pattern) and adds
 tests proving it, not just a docstring promise.
 
 ## Testing requirements
 
 - Every phase ships with `pytest` tests covering: leakage prevention, schema/output
-  validation, and its own core logic (see `tests/classification/` for the phase 2 pattern).
+  validation, and its own core logic (see `backend/tests/classification/` for the phase 2 pattern).
 - Run the full suite before and after any change; it must stay green.
-- Tests mirror `src/` structure (`tests/<package>/test_*.py`).
+- Tests mirror `backend/src/` structure (`backend/tests/<package>/test_*.py`).
 
 ## Git and changelog conventions
 
 - One dated `docs/changelog/000N-*.md` per notable change, indexed in `CHANGELOG.md`.
 - One scoped git commit per notable change — no large uncommitted batches.
-- Generated/disposable files (`.venv/`, `__pycache__/`, `results/cache/`, `.env`) never
+- Generated/disposable files (`.venv/`, `__pycache__/`, `backend/results/cache/`, `.env`) never
   committed.
 - Real API keys only in `.env` (gitignored); live LLM calls are opt-in and cost-estimated.
 
@@ -97,7 +97,7 @@ full architecture speced up front) was revised once dataset work actually starte
   intervals.
 - **Fictional product defined**: FlowHub, a PM/collaboration SaaS, invented specifically so
   feedback text, bugs, features, and releases could stay internally consistent.
-- **Dataset generation/validation scripts added** (`scripts/data/`) — not in the original
+- **Dataset generation/validation scripts added** (`backend/scripts/data/`) — not in the original
   plan, added because hand-writing 150+30 CSV rows without a deterministic generator/checker
   risked ID collisions and label drift.
 - **Product context files (bugs/features/releases) built alongside the dataset**, earlier

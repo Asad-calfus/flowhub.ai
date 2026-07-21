@@ -2,7 +2,8 @@
 __pycache__/
 *.pyc
 .env
-results/cache/
-results/retrieval/cache/
+backend/results/cache/
+backend/results/retrieval/cache/
 .pytest_cache/
 .DS_Store
+.claude/

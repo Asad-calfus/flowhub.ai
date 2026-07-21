@@ -62,11 +62,11 @@ it as a new issue.
 ## How this dataset will be used in later phases
 
 - **Phase 2+ (categorization, sentiment, few-shot classification)**: only the *input* fields
-  documented in `docs/dataset/data_dictionary.md` should be passed to a classifier. The label
+  documented in `../docs/dataset/data_dictionary.md` should be passed to a classifier. The label
   fields
   (`feedback_type`, `category`, `sentiment`, `urgency`, `theme_hint`, `related_context_id`,
   `is_gold_label`, `label_source`) exist purely to score predictions against and must never be
-  fed in as input — see `docs/dataset/dataset_plan.md` for the data-leakage rule.
+  fed in as input — see `../docs/dataset/dataset_plan.md` for the data-leakage rule.
 - **Similar-feedback search**: the deliberate near-duplicate and similar-wording-different-
   meaning records support testing whether a search/embedding approach can tell genuinely
   similar feedback apart from superficially similar but semantically different feedback.
@@ -80,6 +80,6 @@ it as a new issue.
 
 ## Validation
 
-Run `python3 scripts/data/validate_dataset.py` from the repository root to check dataset
+Run `python3 scripts/data/validate_dataset.py` (from `backend/`) from the repository root to check dataset
 integrity (unique IDs, valid label values, valid context references, correct record counts,
-etc.). See `docs/dataset/dataset_summary.md` for current statistics.
+etc.). See `../docs/dataset/dataset_summary.md` for current statistics.

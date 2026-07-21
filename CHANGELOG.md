@@ -3,6 +3,7 @@
 Index of notable changes. Each entry links to a dated doc under `docs/changelog/` with the
 full what/why/files/verification for that change. Newest first.
 
+- [0008 — Frontend/backend repo split](docs/changelog/0008-frontend-backend-split.md)
 - [0007 — Phase 3: embeddings and context retrieval](docs/changelog/0007-embeddings-context-retrieval.md)
 - [0006 — Add project plan roadmap; move context doc to root](docs/changelog/0006-project-plan-doc.md)
 - [0005 — Add project context handoff doc](docs/changelog/0005-project-context-doc.md)
