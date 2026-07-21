@@ -1,0 +1,734 @@
+{
+  "baseline": {
+    "fields": {
+      "feedback_type": {
+        "accuracy": 0.4,
+        "macro_precision": 0.46041666666666664,
+        "macro_recall": 0.48541666666666666,
+        "macro_f1": 0.387310606060606,
+        "per_class": {
+          "Bug report": {
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "support": 8
+          },
+          "Feature request": {
+            "precision": 0.75,
+            "recall": 0.6,
+            "f1": 0.6666666666666665,
+            "support": 5
+          },
+          "Other": {
+            "precision": 0.1,
+            "recall": 1.0,
+            "f1": 0.18181818181818182,
+            "support": 1
+          },
+          "Performance issue": {
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "support": 3
+          },
+          "Praise": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6666666666666666,
+            "support": 1
+          },
+          "Question": {
+            "precision": 0.5,
+            "recall": 0.25,
+            "f1": 0.3333333333333333,
+            "support": 4
+          },
+          "Service complaint": {
+            "precision": 0.3333333333333333,
+            "recall": 0.2,
+            "f1": 0.25,
+            "support": 5
+          },
+          "Usability issue": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 3
+          }
+        },
+        "confusion_matrix": {
+          "Bug report": {
+            "Other": 2,
+            "Bug report": 4,
+            "Question": 1,
+            "Praise": 1
+          },
+          "Question": {
+            "Other": 1,
+            "Question": 1,
+            "Service complaint": 2
+          },
+          "Usability issue": {
+            "Other": 2,
+            "Bug report": 1
+          },
+          "Service complaint": {
+            "Other": 1,
+            "Service complaint": 1,
+            "Bug report": 2,
+            "Feature request": 1
+          },
+          "Performance issue": {
+            "Bug report": 1,
+            "Performance issue": 1,
+            "Other": 1
+          },
+          "Feature request": {
+            "Feature request": 3,
+            "Other": 2
+          },
+          "Praise": {
+            "Praise": 1
+          },
+          "Other": {
+            "Other": 1
+          }
+        },
+        "n": 30
+      },
+      "category": {
+        "accuracy": 0.43333333333333335,
+        "macro_precision": 0.475,
+        "macro_recall": 0.5617424242424243,
+        "macro_f1": 0.42196969696969694,
+        "per_class": {
+          "Inquiry": {
+            "precision": 0.5,
+            "recall": 0.25,
+            "f1": 0.3333333333333333,
+            "support": 4
+          },
+          "Other": {
+            "precision": 0.1,
+            "recall": 1.0,
+            "f1": 0.18181818181818182,
+            "support": 1
+          },
+          "Positive Feedback": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6666666666666666,
+            "support": 1
+          },
+          "Product Feedback": {
+            "precision": 0.75,
+            "recall": 0.375,
+            "f1": 0.5,
+            "support": 8
+          },
+          "Support Experience": {
+            "precision": 0.3333333333333333,
+            "recall": 0.2,
+            "f1": 0.25,
+            "support": 5
+          },
+          "Technical Issue": {
+            "precision": 0.6666666666666666,
+            "recall": 0.5454545454545454,
+            "f1": 0.6,
+            "support": 11
+          }
+        },
+        "confusion_matrix": {
+          "Technical Issue": {
+            "Other": 3,
+            "Technical Issue": 6,
+            "Inquiry": 1,
+            "Positive Feedback": 1
+          },
+          "Inquiry": {
+            "Other": 1,
+            "Inquiry": 1,
+            "Support Experience": 2
+          },
+          "Product Feedback": {
+            "Other": 4,
+            "Product Feedback": 3,
+            "Technical Issue": 1
+          },
+          "Support Experience": {
+            "Other": 1,
+            "Support Experience": 1,
+            "Technical Issue": 2,
+            "Product Feedback": 1
+          },
+          "Positive Feedback": {
+            "Positive Feedback": 1
+          },
+          "Other": {
+            "Other": 1
+          }
+        },
+        "n": 30
+      },
+      "product_module": {
+        "accuracy": 0.8333333333333334,
+        "macro_precision": 0.90625,
+        "macro_recall": 0.85,
+        "macro_f1": 0.8432539682539683,
+        "per_class": {
+          "Authentication": {
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1": 0.888888888888889,
+            "support": 10
+          },
+          "Billing": {
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "support": 3
+          },
+          "Dashboard": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6666666666666666,
+            "support": 4
+          },
+          "Integrations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 2
+          },
+          "Mobile App": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 2
+          },
+          "Notifications": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "support": 2
+          },
+          "Reports": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 3
+          },
+          "Task Management": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "support": 4
+          }
+        },
+        "confusion_matrix": {
+          "Authentication": {
+            "Authentication": 8,
+            "Billing": 1,
+            "Dashboard": 1
+          },
+          "Notifications": {
+            "Notifications": 1,
+            "Dashboard": 1
+          },
+          "Dashboard": {
+            "Dashboard": 4
+          },
+          "Billing": {
+            "Billing": 3
+          },
+          "Mobile App": {
+            "Mobile App": 2
+          },
+          "Integrations": {
+            "Integrations": 2
+          },
+          "Reports": {
+            "Reports": 3
+          },
+          "Task Management": {
+            "Task Management": 2,
+            "Dashboard": 2
+          }
+        },
+        "n": 30
+      },
+      "sentiment": {
+        "accuracy": 0.26666666666666666,
+        "macro_precision": 0.2833333333333333,
+        "macro_recall": 0.38484848484848483,
+        "macro_f1": 0.2036789297658863,
+        "per_class": {
+          "Mixed": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 3
+          },
+          "Negative": {
+            "precision": 0.8,
+            "recall": 0.26666666666666666,
+            "f1": 0.4,
+            "support": 15
+          },
+          "Neutral": {
+            "precision": 0.25,
+            "recall": 0.2727272727272727,
+            "f1": 0.2608695652173913,
+            "support": 11
+          },
+          "Positive": {
+            "precision": 0.08333333333333333,
+            "recall": 1.0,
+            "f1": 0.15384615384615385,
+            "support": 1
+          }
+        },
+        "confusion_matrix": {
+          "Negative": {
+            "Neutral": 7,
+            "Negative": 4,
+            "Positive": 3,
+            "Mixed": 1
+          },
+          "Neutral": {
+            "Negative": 1,
+            "Neutral": 3,
+            "Positive": 7
+          },
+          "Mixed": {
+            "Neutral": 2,
+            "Positive": 1
+          },
+          "Positive": {
+            "Positive": 1
+          }
+        },
+        "n": 30
+      },
+      "urgency": {
+        "accuracy": 0.43333333333333335,
+        "macro_precision": 0.3888888888888889,
+        "macro_recall": 0.34523809523809523,
+        "macro_f1": 0.32491582491582494,
+        "per_class": {
+          "High": {
+            "precision": 0.6666666666666666,
+            "recall": 0.25,
+            "f1": 0.36363636363636365,
+            "support": 8
+          },
+          "Low": {
+            "precision": 0.5,
+            "recall": 0.7857142857142857,
+            "f1": 0.6111111111111112,
+            "support": 14
+          },
+          "Medium": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 8
+          }
+        },
+        "confusion_matrix": {
+          "High": {
+            "Low": 4,
+            "High": 2,
+            "Medium": 2
+          },
+          "Medium": {
+            "Low": 7,
+            "High": 1
+          },
+          "Low": {
+            "Medium": 3,
+            "Low": 11
+          }
+        },
+        "n": 30
+      }
+    },
+    "unscored_feedback_ids": [],
+    "scored_count": 30,
+    "total_gold_count": 30
+  },
+  "llm": {
+    "fields": {
+      "feedback_type": {
+        "accuracy": 0.4,
+        "macro_precision": 0.46041666666666664,
+        "macro_recall": 0.48541666666666666,
+        "macro_f1": 0.387310606060606,
+        "per_class": {
+          "Bug report": {
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "support": 8
+          },
+          "Feature request": {
+            "precision": 0.75,
+            "recall": 0.6,
+            "f1": 0.6666666666666665,
+            "support": 5
+          },
+          "Other": {
+            "precision": 0.1,
+            "recall": 1.0,
+            "f1": 0.18181818181818182,
+            "support": 1
+          },
+          "Performance issue": {
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "support": 3
+          },
+          "Praise": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6666666666666666,
+            "support": 1
+          },
+          "Question": {
+            "precision": 0.5,
+            "recall": 0.25,
+            "f1": 0.3333333333333333,
+            "support": 4
+          },
+          "Service complaint": {
+            "precision": 0.3333333333333333,
+            "recall": 0.2,
+            "f1": 0.25,
+            "support": 5
+          },
+          "Usability issue": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 3
+          }
+        },
+        "confusion_matrix": {
+          "Bug report": {
+            "Other": 2,
+            "Bug report": 4,
+            "Question": 1,
+            "Praise": 1
+          },
+          "Question": {
+            "Other": 1,
+            "Question": 1,
+            "Service complaint": 2
+          },
+          "Usability issue": {
+            "Other": 2,
+            "Bug report": 1
+          },
+          "Service complaint": {
+            "Other": 1,
+            "Service complaint": 1,
+            "Bug report": 2,
+            "Feature request": 1
+          },
+          "Performance issue": {
+            "Bug report": 1,
+            "Performance issue": 1,
+            "Other": 1
+          },
+          "Feature request": {
+            "Feature request": 3,
+            "Other": 2
+          },
+          "Praise": {
+            "Praise": 1
+          },
+          "Other": {
+            "Other": 1
+          }
+        },
+        "n": 30
+      },
+      "category": {
+        "accuracy": 0.43333333333333335,
+        "macro_precision": 0.475,
+        "macro_recall": 0.5617424242424243,
+        "macro_f1": 0.42196969696969694,
+        "per_class": {
+          "Inquiry": {
+            "precision": 0.5,
+            "recall": 0.25,
+            "f1": 0.3333333333333333,
+            "support": 4
+          },
+          "Other": {
+            "precision": 0.1,
+            "recall": 1.0,
+            "f1": 0.18181818181818182,
+            "support": 1
+          },
+          "Positive Feedback": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6666666666666666,
+            "support": 1
+          },
+          "Product Feedback": {
+            "precision": 0.75,
+            "recall": 0.375,
+            "f1": 0.5,
+            "support": 8
+          },
+          "Support Experience": {
+            "precision": 0.3333333333333333,
+            "recall": 0.2,
+            "f1": 0.25,
+            "support": 5
+          },
+          "Technical Issue": {
+            "precision": 0.6666666666666666,
+            "recall": 0.5454545454545454,
+            "f1": 0.6,
+            "support": 11
+          }
+        },
+        "confusion_matrix": {
+          "Technical Issue": {
+            "Other": 3,
+            "Technical Issue": 6,
+            "Inquiry": 1,
+            "Positive Feedback": 1
+          },
+          "Inquiry": {
+            "Other": 1,
+            "Inquiry": 1,
+            "Support Experience": 2
+          },
+          "Product Feedback": {
+            "Other": 4,
+            "Product Feedback": 3,
+            "Technical Issue": 1
+          },
+          "Support Experience": {
+            "Other": 1,
+            "Support Experience": 1,
+            "Technical Issue": 2,
+            "Product Feedback": 1
+          },
+          "Positive Feedback": {
+            "Positive Feedback": 1
+          },
+          "Other": {
+            "Other": 1
+          }
+        },
+        "n": 30
+      },
+      "product_module": {
+        "accuracy": 0.8333333333333334,
+        "macro_precision": 0.90625,
+        "macro_recall": 0.85,
+        "macro_f1": 0.8432539682539683,
+        "per_class": {
+          "Authentication": {
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1": 0.888888888888889,
+            "support": 10
+          },
+          "Billing": {
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "support": 3
+          },
+          "Dashboard": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6666666666666666,
+            "support": 4
+          },
+          "Integrations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 2
+          },
+          "Mobile App": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 2
+          },
+          "Notifications": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "support": 2
+          },
+          "Reports": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 3
+          },
+          "Task Management": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "support": 4
+          }
+        },
+        "confusion_matrix": {
+          "Authentication": {
+            "Authentication": 8,
+            "Billing": 1,
+            "Dashboard": 1
+          },
+          "Notifications": {
+            "Notifications": 1,
+            "Dashboard": 1
+          },
+          "Dashboard": {
+            "Dashboard": 4
+          },
+          "Billing": {
+            "Billing": 3
+          },
+          "Mobile App": {
+            "Mobile App": 2
+          },
+          "Integrations": {
+            "Integrations": 2
+          },
+          "Reports": {
+            "Reports": 3
+          },
+          "Task Management": {
+            "Task Management": 2,
+            "Dashboard": 2
+          }
+        },
+        "n": 30
+      },
+      "sentiment": {
+        "accuracy": 0.26666666666666666,
+        "macro_precision": 0.2833333333333333,
+        "macro_recall": 0.38484848484848483,
+        "macro_f1": 0.2036789297658863,
+        "per_class": {
+          "Mixed": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 3
+          },
+          "Negative": {
+            "precision": 0.8,
+            "recall": 0.26666666666666666,
+            "f1": 0.4,
+            "support": 15
+          },
+          "Neutral": {
+            "precision": 0.25,
+            "recall": 0.2727272727272727,
+            "f1": 0.2608695652173913,
+            "support": 11
+          },
+          "Positive": {
+            "precision": 0.08333333333333333,
+            "recall": 1.0,
+            "f1": 0.15384615384615385,
+            "support": 1
+          }
+        },
+        "confusion_matrix": {
+          "Negative": {
+            "Neutral": 7,
+            "Negative": 4,
+            "Positive": 3,
+            "Mixed": 1
+          },
+          "Neutral": {
+            "Negative": 1,
+            "Neutral": 3,
+            "Positive": 7
+          },
+          "Mixed": {
+            "Neutral": 2,
+            "Positive": 1
+          },
+          "Positive": {
+            "Positive": 1
+          }
+        },
+        "n": 30
+      },
+      "urgency": {
+        "accuracy": 0.43333333333333335,
+        "macro_precision": 0.3888888888888889,
+        "macro_recall": 0.34523809523809523,
+        "macro_f1": 0.32491582491582494,
+        "per_class": {
+          "High": {
+            "precision": 0.6666666666666666,
+            "recall": 0.25,
+            "f1": 0.36363636363636365,
+            "support": 8
+          },
+          "Low": {
+            "precision": 0.5,
+            "recall": 0.7857142857142857,
+            "f1": 0.6111111111111112,
+            "support": 14
+          },
+          "Medium": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 8
+          }
+        },
+        "confusion_matrix": {
+          "High": {
+            "Low": 4,
+            "High": 2,
+            "Medium": 2
+          },
+          "Medium": {
+            "Low": 7,
+            "High": 1
+          },
+          "Low": {
+            "Medium": 3,
+            "Low": 11
+          }
+        },
+        "n": 30
+      }
+    },
+    "unscored_feedback_ids": [],
+    "scored_count": 30,
+    "total_gold_count": 30,
+    "run_summary": {
+      "total_records": 30,
+      "schema_success_count": 30,
+      "schema_success_rate": 1.0,
+      "failure_count": 0,
+      "retry_count": 0,
+      "cache_hit_count": 30,
+      "average_latency_seconds": null,
+      "total_input_tokens": null,
+      "total_output_tokens": null,
+      "average_input_tokens": null,
+      "average_output_tokens": null,
+      "dry_run": true
+    }
+  }
+}
