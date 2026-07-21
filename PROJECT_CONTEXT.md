@@ -5,7 +5,7 @@ next phase can start without re-reading the whole repo. It's a snapshot/index, n
 authoritative source for any topic - follow the links for detail, and treat this doc as
 possibly stale on anything it doesn't link to a source file for.
 
-**Last updated**: 2026-07-21, after `docs/changelog/0006`.
+**Last updated**: 2026-07-21, after `docs/changelog/0007`.
 
 **Roadmap**: see `docs/project_plan.md` for the full 10-phase plan, MVP scope, deferred
 features, and the "changes from the original plan" record. This doc is current status; that
@@ -77,6 +77,22 @@ LLM run is expected to improve most fields meaningfully; that hasn't been measur
 always dry-runs unless `--live` is passed explicitly; `--live` prints a cost estimate
 (`src/classification/pricing.py`) and asks for confirmation. Recommended model: `gpt-4o-mini`.
 
+### Phase 3 — Embeddings and context retrieval (`docs/changelog/0007-*.md`)
+
+Local semantic retrieval (`src/retrieval/`), no LLM: `sentence-transformers/all-MiniLM-L6-v2`
+(384-dim, `EMBEDDING_MODEL` env var). Embeds feedback (input fields only - `feedback_text`,
+`source`, `customer_tier`, `product_version`, `language`) and product context
+(bugs/features/releases), caches vectors with hash-based skip-unchanged. Cosine similarity
+finds top-5 similar feedback (all 150 records) and, for the 30 gold records only, top-3
+candidate bugs/feature-requests/releases with a threshold-based status
+(`known_bug`/`duplicate_feature_request`/`possible_release_issue`/`new_untracked_issue`/
+`no_confident_match`). `related_context_id`/`theme_hint` are read only inside
+`scripts/pipeline/evaluate_retrieval.py`, never during retrieval itself.
+
+**Results** (gold set): recall@3 = 1.0, MRR = 0.90, recall@1 = 0.83, false-known-issue rate on
+genuinely new issues = 0.33. Similar-feedback same-theme precision/recall@5 = 0.66. Full
+breakdown, including the specific miss cases: `results/retrieval/retrieval_error_analysis.md`.
+
 ### Repo structure tidy (`docs/changelog/0004-*.md`, `0006-*.md`)
 
 `scripts/` split into `data/` and `pipeline/`; `docs/` split into `dataset/` and
@@ -97,11 +113,9 @@ full layout is in the root `README.md` "Project structure" section.
 
 ## Explicitly NOT built yet
 
-Embeddings, similarity/similar-feedback search, theme clustering, context (bug/feature
-request) matching against `related_context_id`, weekly summary generation, the API layer,
-database, frontend, CI/CD, and packaging (`pyproject.toml`). These were deferred by explicit
-decision at each phase, not forgotten - see the "Follow-ups deferred" section of each
-changelog entry.
+Theme clustering, weekly summary generation, the API layer, database, frontend, Celery/Redis,
+CI/CD, and packaging (`pyproject.toml`). Deferred by explicit decision at each phase, not
+forgotten - see `docs/project_plan.md` and each changelog entry's "Follow-ups deferred".
 
 ## Quick orientation for a fresh session
 

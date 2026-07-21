@@ -11,14 +11,17 @@ docs/
 ├── dataset/            # dataset design docs (plan, taxonomy, data dictionary, summary)
 └── changelog/          # one dated doc per notable change, indexed by CHANGELOG.md
 results/                # predictions, metrics, error analysis (generated, not hand-written)
+├── retrieval/          # Phase 3 outputs (+ cache/, gitignored)
 scripts/
 ├── data/               # generate/validate the dataset
-└── pipeline/           # run baseline / LLM classifier / evaluation
+└── pipeline/           # classification + retrieval runners
 src/
 ├── data_loader.py       # shared CSV loading helpers
-└── classification/      # schemas, prompt builder, baseline, LLM classifier, evaluator, pricing
+├── classification/      # schemas, prompt builder, baseline, LLM classifier, evaluator, pricing
+└── retrieval/           # schemas, text_builder, embedder, similarity, context_retriever, evaluator
 tests/
-└── classification/      # mirrors src/classification/
+├── classification/      # mirrors src/classification/
+└── retrieval/           # mirrors src/retrieval/
 ```
 
 ## Phase 1 — Synthetic dataset
@@ -136,8 +139,26 @@ results/
 └── error_analysis.md
 ```
 
+## Phase 3 — Embeddings and context retrieval
+
+Local semantic retrieval, no LLM, no API cost: `sentence-transformers/all-MiniLM-L6-v2`
+(384-dim, configurable via `EMBEDDING_MODEL`) embeds feedback + bugs/feature-requests/releases
+(`src/retrieval/`). Finds similar historical feedback and matches feedback against known
+bugs/feature requests using cosine similarity with configurable thresholds
+(`CONTEXT_MATCH_THRESHOLD`, `CONTEXT_LOW_SIGNAL_THRESHOLD`) - never using `related_context_id`
+as input, only as post-hoc evaluation ground truth.
+
+```bash
+python3 scripts/pipeline/generate_embeddings.py     # embed + cache all records
+python3 scripts/pipeline/run_similarity_search.py   # similar feedback (all 150) + context match (gold 30)
+python3 scripts/pipeline/evaluate_retrieval.py      # recall@1/3, MRR, same-theme P/R@5, etc.
+```
+
+Results: `results/retrieval/` (`*_predictions.csv`, `retrieval_metrics.json`,
+`retrieval_error_analysis.md`). Current gold-set numbers: context recall@3 = 1.0, MRR = 0.90;
+same-theme precision/recall@5 = 0.66. Full breakdown in the error analysis doc.
+
 ## Not yet implemented
 
-Embeddings, similarity search, theme clustering, context (bug/feature request) matching,
-weekly summaries, the API layer, database, and frontend are out of scope for Phase 2 and are
-planned for later phases.
+Theme clustering, weekly summaries, the API layer, database, frontend, Celery/Redis are out
+of scope and planned for later phases (see `docs/project_plan.md`).

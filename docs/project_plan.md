@@ -25,8 +25,8 @@ do the job (classification, weekly-summary prose).
 |---|---|---|
 | 1 | Synthetic dataset and taxonomy | Complete |
 | 2 | Classification and sentiment pipeline | Complete |
-| 3 | Embeddings, similarity search, and context matching | Current |
-| 4 | Theme clustering and trend detection | Planned |
+| 3 | Embeddings, similarity search, and context matching | Complete |
+| 4 | Theme clustering and trend detection | Current |
 | 5 | PostgreSQL and FastAPI layer | Planned |
 | 6 | Weekly insight generation | Planned |
 | 7 | Frontend dashboard | Planned |
