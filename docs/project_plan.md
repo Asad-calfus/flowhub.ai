@@ -26,8 +26,8 @@ do the job (classification, weekly-summary prose).
 | 1 | Synthetic dataset and taxonomy | Complete |
 | 2 | Classification and sentiment pipeline | Complete |
 | 3 | Embeddings, similarity search, and context matching | Complete |
-| 4 | Theme clustering and trend detection | Current |
-| 5 | PostgreSQL and FastAPI layer | Planned |
+| 4 | Theme clustering and trend detection | Complete |
+| 5 | PostgreSQL and FastAPI layer | Complete |
 | 6 | Weekly insight generation | Planned |
 | 7 | Frontend dashboard | Planned |
 | 8 | Background processing (Celery + Redis) | Planned |
@@ -45,9 +45,10 @@ to browse it all, with human correction feeding back into evaluation.
 
 ## Deferred (explicitly, not forgotten)
 
-Vector databases (pgvector later, not now), LangChain/LlamaIndex, multi-org support, Jira/
-Slack integrations, churn prediction, AI copilot, scheduled alerts — none of these are on the
-roadmap above; revisit only after phase 10.
+LangChain/LlamaIndex, multi-org support, Jira/Slack integrations, churn prediction, AI
+copilot, scheduled alerts — none of these are on the roadmap above; revisit only after phase
+10. (pgvector was originally deferred here too, but Phase 5 needed it for the embeddings
+table sooner than expected - see `docs/changelog/0010-*.md`.)
 
 ## Technical stack
 

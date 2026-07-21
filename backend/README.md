@@ -10,16 +10,19 @@ Python AI/data pipeline. See root `../README.md` for the project overview and
 data/                   # dataset (raw/processed/evaluation/context) - see data/README.md
 results/                # predictions, metrics, error analysis (generated, not hand-written)
 ├── retrieval/          # Phase 3 outputs (+ cache/, gitignored)
+└── themes/             # Phase 4 outputs
 scripts/
 ├── data/               # generate/validate the dataset
-└── pipeline/           # classification + retrieval runners
+└── pipeline/           # classification + retrieval + theme runners
 src/
 ├── data_loader.py       # shared CSV loading helpers
 ├── classification/      # schemas, prompt builder, baseline, LLM classifier, evaluator, pricing
-└── retrieval/           # schemas, text_builder, embedder, similarity, context_retriever, evaluator
+├── retrieval/           # schemas, text_builder, embedder, similarity, context_retriever, evaluator
+└── themes/              # clustering, keywords, representatives, naming, trends, evaluator
 tests/
 ├── classification/      # mirrors src/classification/
-└── retrieval/           # mirrors src/retrieval/
+├── retrieval/           # mirrors src/retrieval/
+└── themes/              # mirrors src/themes/
 ```
 
 Dataset/taxonomy/pipeline design docs live in root `../docs/`.
@@ -158,7 +161,134 @@ Results: `results/retrieval/` (`*_predictions.csv`, `retrieval_metrics.json`,
 `retrieval_error_analysis.md`). Current gold-set numbers: context recall@3 = 1.0, MRR = 0.90;
 same-theme precision/recall@5 = 0.66. Full breakdown in the error analysis doc.
 
-## Not yet implemented
+## Phase 4 — Theme clustering and trend detection
 
-Theme clustering, weekly summaries, the API layer, database, frontend, Celery/Redis are out
-of scope and planned for later phases (see `docs/project_plan.md`).
+Local, deterministic clustering, no LLM: agglomerative clustering (cosine distance, average
+linkage) over the Phase 3 feedback embeddings only (`src/themes/`). TF-IDF keywords,
+centroid-based representatives, rule-based naming, and weekly trend stats per theme.
+`theme_hint` is read only for evaluation, after clustering has run.
+
+```bash
+python3 scripts/pipeline/generate_themes.py    # cluster + keywords + names + trends
+python3 scripts/pipeline/evaluate_themes.py    # coverage, purity, ARI, NMI, pairwise P/R/F1
+
+# force regeneration with different clustering config
+THEME_DISTANCE_THRESHOLD=0.6 THEME_MIN_SIZE=5 python3 scripts/pipeline/generate_themes.py
+```
+
+Results: `results/themes/` (`theme_assignments.csv`, `themes.csv`, `theme_metrics.json`,
+`theme_error_analysis.md`). Current numbers: 16 themes from 150 records, 84 assigned / 66
+unclustered; cluster purity 0.92, ARI 0.38, NMI 0.70 against the 69 `theme_hint` records.
+Full breakdown in the error analysis doc.
+
+## Phase 5 — PostgreSQL and FastAPI backend
+
+FastAPI app (`app/`) over PostgreSQL + pgvector, exposing Phases 1-4 (`src/`) over HTTP.
+Routes are thin; business logic lives in `app/services/`, DB queries in `app/repositories/`.
+No classification/retrieval/clustering logic is duplicated - services call `src/` directly.
+
+### Setup
+
+```bash
+docker compose -f ../docker-compose.yml up -d db   # Postgres 16 + pgvector, localhost:5433
+# .env already has DATABASE_URL=postgresql+psycopg://flowhub:flowhub@localhost:5433/flowhub
+alembic upgrade head
+python3 scripts/import_data.py                     # backfill existing dataset/results
+uvicorn app.main:app --reload --port 8001
+```
+
+### Database schema
+
+| Table | Purpose |
+|---|---|
+| `feedback` | Raw feedback only (no generated fields) - reprocessable |
+| `analysis_results` | One row per classification run (history, not overwritten) |
+| `embeddings` | `pgvector` `vector(384)` per feedback, `sentence-transformers/all-MiniLM-L6-v2` |
+| `context_records` | Known bugs, feature requests, releases, product modules (unified, `context_type` discriminator) |
+| `context_matches` | One row per feedback↔context candidate pairing, `match_status` matched/candidate |
+| `themes` | One row per cluster: name, keywords, size, first/last seen, trend status |
+| `theme_members` | feedback↔theme membership; `membership_score` also identifies representatives (top-3) |
+
+### API endpoints (`/api/v1`, see `app/api/routes/`)
+
+```
+GET    /health                                     liveness, no DB
+GET    /api/v1/status                              liveness + DB round-trip
+
+POST   /api/v1/feedback                            create
+POST   /api/v1/feedback/import                     bulk-create from uploaded CSV
+GET    /api/v1/feedback                             paginated + filtered list
+GET    /api/v1/feedback/{id}
+DELETE /api/v1/feedback/{id}
+GET    /api/v1/feedback/{id}/similar?top_k=5        nearest feedback (pgvector cosine)
+GET    /api/v1/feedback/{id}/context-matches?top_k=3  known-bug/feature/release candidates
+
+POST   /api/v1/analysis/{id}                        {"method": "baseline"|"llm", "live": bool, "force": bool}
+GET    /api/v1/analysis/{id}                         latest result
+POST   /api/v1/analysis/batch                         {"feedback_ids": [...] | omit for all pending, ...}
+
+GET    /api/v1/themes
+GET    /api/v1/themes/{id}                            + sentiment distribution, representative feedback, members
+GET    /api/v1/themes/{id}/feedback
+```
+
+List filters: `source`, `sentiment`, `category`, `product_module`, `customer_tier`,
+`processing_status`, `date_from`, `date_to`, `page`, `page_size`.
+
+**Cost-safe by construction, same guarantees as the standalone pipeline**
+([[feedback_openai_cost_safety]]): `method=baseline` is the default; `method=llm` defaults to
+`live=false` (dry-run stub, no API call); `live=true` returns `503` immediately if no
+provider key is configured. No request path can trigger a real LLM call without an explicit
+`"live": true` in the body.
+
+### Migrations
+
+```bash
+alembic revision --autogenerate -m "description"
+alembic upgrade head
+alembic downgrade -1
+```
+
+### Import existing data
+
+```bash
+python3 scripts/import_data.py
+```
+
+Backfills the 150 feedback records, 8 product modules, 15 bugs, 12 feature requests, 6
+releases, cached Phase 3 embeddings, baseline classification predictions, gold-set context
+matches, and Phase 4 theme assignments - straight from the existing CSV/JSON/`.npy` files, no
+recomputation, no LLM calls. Every row is existence-checked before insert, so it's safe to
+run repeatedly; re-running reports `imported: 0` / everything skipped. Prints a summary
+(counts per table + any FK-validation errors) - see `docs/changelog/0010-*.md` for a sample
+run.
+
+### Tests
+
+```bash
+python3 -m pytest -q                # full suite (131 tests: 98 pipeline + 33 API)
+python3 -m pytest tests/api -q       # API tests only
+```
+
+`tests/api/` runs against an isolated `flowhub_test` Postgres database
+(`TEST_DATABASE_URL`, default `postgresql+psycopg://flowhub:flowhub@localhost:5433/flowhub_test`)
+- tables are created fresh per test session and truncated after every test, so it never
+touches dev data.
+
+### Docker
+
+```bash
+docker compose up -d          # from the repo root: db (5433) + backend (8001)
+docker compose up -d db       # Postgres only, if running the API locally instead
+```
+
+`pgvector`'s `CREATE EXTENSION vector` runs automatically on first boot
+(`scripts/db/init_pgvector.sql`). Host ports are `5433`/`8001`, not the defaults `5432`/
+`8000`, to avoid colliding with an unrelated project's containers on this machine - see
+`docker-compose.yml` if that's not a constraint for you.
+
+### Not yet implemented
+
+Weekly LLM summaries, frontend, Celery/Redis, authentication, and multi-tenancy are out of
+scope for Phase 5 (see `docs/project_plan.md`). Also deferred: advanced/full-text search on
+feedback, async/background batch analysis (synchronous for now, per spec), and CI.

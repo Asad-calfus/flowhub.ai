@@ -1,0 +1,38 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: flowhub
+      POSTGRES_PASSWORD: flowhub
+      POSTGRES_DB: flowhub
+    ports:
+      - "5433:5432"
+    volumes:
+      - flowhub_pgdata:/var/lib/postgresql/data
+      - ./backend/scripts/db/init_pgvector.sql:/docker-entrypoint-initdb.d/init_pgvector.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flowhub -d flowhub"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg://flowhub:flowhub@db:5432/flowhub
+      CORS_ORIGINS: "http://localhost:3000"
+    ports:
+      - "8001:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    command: >
+      sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+volumes:
+  flowhub_pgdata:

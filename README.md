@@ -20,4 +20,14 @@ pip install -r requirements.txt
 python3 -m pytest -q
 ```
 
-Full setup/run commands: `backend/README.md`.
+## Backend API (Phase 5)
+
+```bash
+docker compose up -d db          # Postgres 16 + pgvector, http://localhost:5433
+cd backend
+alembic upgrade head
+python3 scripts/import_data.py   # backfill the existing dataset/results (safe to re-run)
+uvicorn app.main:app --reload --port 8001
+```
+
+Full setup/run commands, API endpoints, and schema: `backend/README.md`.
