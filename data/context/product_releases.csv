@@ -1,0 +1,7 @@
+version,release_date,main_changes,affected_modules,known_limitations
+v2.1.0,2026-01-12,Introduced self-service billing portal and redesigned password reset flow,"Billing, Authentication",Annual plan proration edge cases not fully handled at launch
+v2.2.0,2026-02-16,Redesigned dashboard widgets and added Slack integration,"Dashboard, Integrations",Dashboard load times may increase for workspaces with 500+ tasks
+v2.3.0,2026-03-23,Rebuilt notification delivery pipeline and added Google Calendar integration,"Notifications, Integrations",Push notification delivery may lag during peak hours
+v2.4.0,2026-04-27,Added Okta SSO login and calendar view for Task Management,"Authentication, Task Management",SSO session refresh behavior not fully validated across all timezones
+v2.5.0,2026-06-01,"Rebuilt mobile app for iOS and Android, updated invoicing","Mobile App, Billing",Mobile attachment handling still being stabilized post-rewrite
+v2.6.0,2026-07-06,Added scheduled recurring reports and Enterprise workspace improvements,Reports,Report scheduler reliability for very large Enterprise workspaces still being monitored

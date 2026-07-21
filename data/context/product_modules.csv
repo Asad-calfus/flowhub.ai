@@ -1,0 +1,9 @@
+module_id,module_name,description,owning_team
+MOD-01,Authentication,"Handles user sign-up, login, SSO, password management, and session security.",Platform Team
+MOD-02,Dashboard,"The main workspace overview showing projects, tasks, and activity widgets.",Core Product Team
+MOD-03,Task Management,"Creating, assigning, tracking, and organizing tasks and projects.",Core Product Team
+MOD-04,Notifications,"In-app, email, and push notifications for task and workspace activity.",Platform Team
+MOD-05,Billing,"Subscription plans, invoicing, payment methods, and plan changes.",Billing Team
+MOD-06,Integrations,"Connections to third-party tools such as Slack, Jira, and Google Calendar.",Integrations Team
+MOD-07,Reports,"Analytics, exports, and scheduled reporting on workspace activity.",Data & Analytics Team
+MOD-08,Mobile App,iOS and Android apps for task management on the go.,Mobile Team

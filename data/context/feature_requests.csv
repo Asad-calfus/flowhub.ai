@@ -1,0 +1,13 @@
+request_id,title,description,product_module,status,request_count,roadmap_status
+FR-001,Dark mode for the web dashboard,Customers have asked for a dark theme option for the web dashboard to reduce eye strain during long work sessions.,Dashboard,Planned,284,Q3 2026
+FR-002,Bulk editing for tasks,"Ability to select multiple tasks and change status, assignee, or due date in one action.",Task Management,Under review,96,Backlog
+FR-003,Custom notification digest schedule,Let users choose a daily or weekly digest time instead of receiving notifications immediately.,Notifications,In progress,132,Q3 2026
+FR-004,Export reports to Excel with formatting,"Export workspace reports directly to Excel with charts and formatting preserved, not just raw CSV.",Reports,Under review,77,Backlog
+FR-005,Single sign-on with Okta,Enterprise customers requested SSO login support via Okta.,Authentication,Released,210,Shipped in v2.4.0
+FR-006,Two-way sync with Jira,Sync tasks bidirectionally between FlowHub and Jira issues.,Integrations,Planned,158,Q4 2026
+FR-007,Usage-based billing option,An alternative to flat subscription tiers based on active seats per month.,Billing,Rejected,41,Not planned
+FR-008,Offline mode for mobile app,"Allow viewing and editing tasks in the mobile app without an internet connection, syncing later.",Mobile App,Under review,63,Backlog
+FR-009,Recurring tasks and task templates,Create tasks that repeat on a schedule and save templates for common task types.,Task Management,Planned,190,Q3 2026
+FR-010,Custom dashboard widgets,Let users build and arrange their own dashboard widgets instead of a fixed layout.,Dashboard,In progress,122,Q4 2026
+FR-011,Slack thread replies for task comments,Post task comment replies as threaded replies in Slack instead of new messages.,Integrations,Under review,54,Backlog
+FR-012,Multi-currency invoicing,Generate invoices in the customer's local currency instead of USD only.,Billing,Under review,38,Backlog

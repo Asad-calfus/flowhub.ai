@@ -1,0 +1,16 @@
+bug_id,title,description,product_module,affected_versions,status,priority,created_at
+BUG-001,SSO session expires within minutes of login,"Users authenticating via Okta SSO are logged out automatically 60-120 seconds after signing in, requiring repeated re-authentication.",Authentication,"v2.4.0, v2.5.0",Open,High,2026-05-03
+BUG-002,Push notifications delayed by up to 2 hours,"Mobile and desktop push notifications for task assignments and mentions are frequently delayed, in some cases by up to two hours.",Notifications,"v2.3.0, v2.4.0, v2.5.0",In progress,High,2026-04-05
+BUG-003,Dashboard widgets slow to load on large workspaces,Workspaces with 500+ active tasks experience dashboard load times exceeding 10 seconds.,Dashboard,"v2.2.0, v2.3.0, v2.4.0",Monitoring,Medium,2026-03-10
+BUG-004,Duplicate charge on annual plan renewal,A subset of annual subscribers were charged twice during renewal due to a proration calculation error.,Billing,"v2.1.0, v2.2.0, v2.3.0",Fixed,Critical,2026-02-14
+BUG-005,Mobile app crashes when opening tasks with attachments,The iOS and Android apps crash when opening a task that has one or more file attachments larger than 5MB.,Mobile App,v2.5.0,Open,High,2026-06-08
+BUG-006,Slack integration stops syncing after token refresh,"Slack messages and task updates stop syncing after the OAuth token silently refreshes, requiring a manual reconnect.",Integrations,"v2.2.0, v2.3.0, v2.4.0",In progress,High,2026-03-28
+BUG-007,CSV export truncates beyond 1000 rows,Exported CSV reports silently cut off after 1000 rows with no warning to the user.,Reports,"v2.1.0, v2.2.0, v2.3.0, v2.4.0, v2.5.0, v2.6.0",Open,Medium,2026-01-22
+BUG-008,Task comments do not update in real time,New comments on a task only appear after a manual page refresh instead of updating live.,Task Management,"v2.2.0, v2.3.0",Monitoring,Low,2026-03-18
+BUG-009,Password reset emails not received,Password reset emails are delayed by 30-60 minutes or not delivered at all for some domains.,Authentication,"v2.1.0, v2.2.0",Fixed,Medium,2026-02-01
+BUG-010,Calendar view misaligns tasks across timezones,Tasks with due dates near midnight appear on the wrong day in the calendar view for users outside UTC.,Task Management,"v2.4.0, v2.5.0",Open,Medium,2026-05-15
+BUG-011,Google Calendar integration creates duplicate events,Tasks synced to Google Calendar occasionally create a second duplicate event after being edited.,Integrations,"v2.3.0, v2.4.0, v2.5.0",Open,High,2026-06-17
+BUG-012,Mobile app logs users out randomly,"Users on the mobile app are unexpectedly signed out multiple times per day, unrelated to session expiry settings.",Mobile App,"v2.4.0, v2.5.0",In progress,High,2026-05-11
+BUG-013,Invoice PDF shows incorrect tax amount,Generated invoice PDFs display an incorrect tax line for customers in certain regions.,Billing,"v2.5.0, v2.6.0",Open,Medium,2026-06-22
+BUG-014,Notification preferences reset after logout,Custom notification settings revert to default after a user logs out and back in.,Notifications,"v2.2.0, v2.3.0, v2.4.0",Monitoring,Low,2026-03-26
+BUG-015,Report scheduler fails silently for Enterprise workspaces,"Scheduled recurring reports do not send for some Enterprise workspaces, with no error surfaced to the admin.",Reports,v2.6.0,Open,High,2026-07-09
