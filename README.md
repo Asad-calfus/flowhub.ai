@@ -1,5 +1,8 @@
 # FlowHub AI Customer Feedback Intelligence Platform
 
+Starting a new phase or a fresh session? Read `docs/project_context.md` first - it's a
+single-page summary of everything built so far and what's explicitly not built yet.
+
 ## Project structure
 
 ```text
