@@ -1,14 +1,14 @@
 """Run the deterministic rule-based + VADER baseline over the gold evaluation set.
 
 Usage:
-    python3 scripts/run_baseline.py
+    python3 scripts/pipeline/run_baseline.py
 """
 
 import csv
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from src.classification.baseline import classify_baseline
 from src.classification.schemas import ClassifierInput

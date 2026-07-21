@@ -1,7 +1,7 @@
 {
   "dry_run": true,
-  "model": "",
-  "provider": "anthropic",
+  "model": "gpt-4o-mini",
+  "provider": "openai",
   "n_examples": 8,
   "example_ids": [
     "FB-0002",

@@ -1,7 +1,7 @@
 """Evaluate baseline_predictions.csv and llm_predictions.csv against the gold set.
 
 Usage:
-    python3 scripts/run_evaluation.py
+    python3 scripts/pipeline/run_evaluation.py
 """
 
 import csv
@@ -9,7 +9,7 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from src.classification.evaluator import evaluate_predictions, summarize_run_from_rows
 from src.classification.schemas import PREDICTION_FIELDS

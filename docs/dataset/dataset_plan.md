@@ -51,7 +51,7 @@ were built in two groups:
    don't belong to a major theme, some tied to remaining context entries and many left as
    genuinely new issues with no match.
 
-A small Python script (`scripts/generate_dataset.py`) assembles the hand-written records into
+A small Python script (`scripts/data/generate_dataset.py`) assembles the hand-written records into
 the final CSVs and assigns `feedback_id`, `category`, and gold-label flags mechanically, so the
 generated files are guaranteed to be internally consistent (no ID collisions, no orphaned
 labels) even though the content itself was authored by hand.
@@ -86,7 +86,7 @@ arrives should ever be passed into a classifier:
 **Evaluation labels (never passed to the classifier as input)**: `feedback_type`, `category`,
 `sentiment`, `urgency`, `theme_hint`, `related_context_id`, `is_gold_label`, `label_source`.
 
-See `docs/data_dictionary.md` for the per-field breakdown.
+See `docs/dataset/data_dictionary.md` for the per-field breakdown.
 
 ## How data leakage will be prevented
 

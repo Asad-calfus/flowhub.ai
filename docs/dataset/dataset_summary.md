@@ -1,7 +1,7 @@
 # Dataset Summary — Phase 1
 
 Statistics computed directly from `data/processed/feedback_dataset.csv` (150 records) and
-related context files. Regenerate by re-running `scripts/generate_dataset.py`; these numbers
+related context files. Regenerate by re-running `scripts/data/generate_dataset.py`; these numbers
 will always match the actual CSV contents since both are produced by the same script.
 
 ## Totals
@@ -147,7 +147,7 @@ into an artificial theme.
 | `theme_hint` | 81 | By design, only set for records belonging to a major theme |
 | `related_context_id` | 82 | By design, blank for new issues with no known match |
 
-All other fields are always populated (enforced by `scripts/validate_dataset.py`).
+All other fields are always populated (enforced by `scripts/data/validate_dataset.py`).
 
 ## Duplicates
 
@@ -179,4 +179,4 @@ All other fields are always populated (enforced by `scripts/validate_dataset.py`
 - Only 5 non-English records — multilingual handling is only lightly exercised.
 - Sentiment/urgency/type labels were authored by hand alongside the text (not independently
   double-annotated), so while internally consistent, they reflect one reviewer's judgment
-  calls on ambiguous cases (documented in `docs/taxonomy.md`).
+  calls on ambiguous cases (documented in `docs/dataset/taxonomy.md`).

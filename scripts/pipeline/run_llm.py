@@ -5,11 +5,11 @@ you pass --live explicitly, even if an API key is present in the environment. Th
 prevents an accidental real spend just from having a key configured.
 
 Usage:
-    python3 scripts/run_llm.py                 # dry-run stub, no API calls, no cost
-    python3 scripts/run_llm.py --live           # real API calls; prints a cost estimate
+    python3 scripts/pipeline/run_llm.py                 # dry-run stub, no API calls, no cost
+    python3 scripts/pipeline/run_llm.py --live           # real API calls; prints a cost estimate
                                                  # and asks for confirmation first
-    python3 scripts/run_llm.py --live --yes     # real API calls, skip the confirmation prompt
-    python3 scripts/run_llm.py --force          # bypass the local cache and reclassify everything
+    python3 scripts/pipeline/run_llm.py --live --yes     # real API calls, skip the confirmation prompt
+    python3 scripts/pipeline/run_llm.py --force          # bypass the local cache and reclassify everything
 """
 
 import argparse
@@ -18,7 +18,7 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from src.classification.classifier import FewShotClassifier
 from src.classification.pricing import RECOMMENDED_MODEL, estimate_run_cost_usd

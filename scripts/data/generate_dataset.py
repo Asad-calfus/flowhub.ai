@@ -4,7 +4,7 @@ Generates the synthetic dataset for the AI Customer Feedback Intelligence Platfo
 Fictional product: FlowHub - a project management & team collaboration SaaS.
 
 Run:
-    python3 scripts/generate_dataset.py
+    python3 scripts/data/generate_dataset.py
 
 Writes:
     data/raw/synthetic_feedback.csv
@@ -22,7 +22,7 @@ data (names, emails, phone numbers) is included anywhere in this dataset.
 import csv
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def path(*parts):

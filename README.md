@@ -1,10 +1,28 @@
 # FlowHub AI Customer Feedback Intelligence Platform
 
+## Project structure
+
+```text
+data/                   # dataset (raw/processed/evaluation/context) - see data/README.md
+docs/
+├── dataset/            # dataset design docs (plan, taxonomy, data dictionary, summary)
+└── changelog/          # one dated doc per notable change, indexed by CHANGELOG.md
+results/                # predictions, metrics, error analysis (generated, not hand-written)
+scripts/
+├── data/               # generate/validate the dataset
+└── pipeline/           # run baseline / LLM classifier / evaluation
+src/
+├── data_loader.py       # shared CSV loading helpers
+└── classification/      # schemas, prompt builder, baseline, LLM classifier, evaluator, pricing
+tests/
+└── classification/      # mirrors src/classification/
+```
+
 ## Phase 1 — Synthetic dataset
 
-See `data/README.md` and `docs/` (`dataset_plan.md`, `taxonomy.md`, `data_dictionary.md`,
-`dataset_summary.md`) for the 150-record synthetic feedback dataset, gold evaluation set, and
-product context files.
+See `data/README.md` and `docs/dataset/` (`dataset_plan.md`, `taxonomy.md`,
+`data_dictionary.md`, `dataset_summary.md`) for the 150-record synthetic feedback dataset,
+gold evaluation set, and product context files.
 
 ## Phase 2 — Classification and sentiment pipeline
 
@@ -31,24 +49,24 @@ cp .env.example .env   # fill in OPENAI_API_KEY (or ANTHROPIC_API_KEY) only for 
 ### Run the baseline (rule-based + VADER, no API calls, no cost)
 
 ```bash
-python3 scripts/run_baseline.py
+python3 scripts/pipeline/run_baseline.py
 ```
 
 ### Run the few-shot LLM classifier
 
 ```bash
 # Dry-run - ALWAYS the default, even if an API key is present. No network calls.
-python3 scripts/run_llm.py
+python3 scripts/pipeline/run_llm.py
 
 # Live run: real API calls against the 30 gold records only. Prints a cost estimate
 # and asks for confirmation before spending anything.
-python3 scripts/run_llm.py --live
+python3 scripts/pipeline/run_llm.py --live
 
 # Live run, skip the confirmation prompt (e.g. non-interactive/CI use)
-python3 scripts/run_llm.py --live --yes
+python3 scripts/pipeline/run_llm.py --live --yes
 
 # Bypass the cache and reclassify everything (combine with --live to force fresh API calls)
-python3 scripts/run_llm.py --live --force
+python3 scripts/pipeline/run_llm.py --live --force
 ```
 
 Predictions are cached by `feedback_id` in `results/cache/llm_cache.json`. Without `--force`,
@@ -84,7 +102,7 @@ The pipeline is designed so a real key is cheap and hard to spend accidentally:
 ### Run evaluation (baseline vs. LLM, against the gold set)
 
 ```bash
-python3 scripts/run_evaluation.py
+python3 scripts/pipeline/run_evaluation.py
 ```
 
 Writes `results/evaluation_metrics.json` (per-field accuracy, macro precision/recall/F1,
@@ -100,7 +118,7 @@ python3 -m pytest -q
 ### Full pipeline in one go
 
 ```bash
-python3 scripts/run_baseline.py && python3 scripts/run_llm.py && python3 scripts/run_evaluation.py
+python3 scripts/pipeline/run_baseline.py && python3 scripts/pipeline/run_llm.py && python3 scripts/pipeline/run_evaluation.py
 ```
 
 ### Outputs

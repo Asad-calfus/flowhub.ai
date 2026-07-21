@@ -2,7 +2,7 @@
 Lightweight validation for the Phase 1 synthetic feedback dataset.
 
 Run:
-    python3 scripts/validate_dataset.py
+    python3 scripts/data/validate_dataset.py
 
 Performs structural and referential checks on data/processed/feedback_dataset.csv,
 data/evaluation/gold_feedback.csv, and the data/context/*.csv files. Prints a
@@ -14,7 +14,7 @@ import os
 import sys
 from datetime import datetime
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def path(*parts):
