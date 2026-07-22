@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BarChart3, Gauge, Inbox, TriangleAlert } from "lucide-react";
+import { BarChart3, CheckCheck, Gauge, Inbox, TriangleAlert } from "lucide-react";
 import { api } from "@/lib/api";
 import { useApi } from "@/lib/useApi";
 import { PageHeader } from "@/components/PageHeader";
@@ -33,6 +33,7 @@ function InsightList({ items, emptyLabel }: { items: (ThemeInsight | ContextInsi
 export default function DashboardPage() {
   const feedbackTotal = useApi(() => api.listFeedback({ page: 1, page_size: 1 }), []);
   const latestReport = useApi(() => api.listReports(1, 1), []);
+  const correctionStats = useApi(() => api.getCorrectionStats(), []);
 
   const report = latestReport.data?.items[0];
   const reportDetail = useApi(() => (report ? api.getReport(report.id) : Promise.resolve(null)), [report?.id]);
@@ -67,7 +68,7 @@ export default function DashboardPage() {
 
         {!loading && !error && (
           <>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
               <MetricCard label="Total feedback" value={feedbackTotal.data?.total ?? 0} hint="All time, from /feedback" icon={Inbox} tone="brand" />
               <MetricCard
                 label="Feedback in latest report"
@@ -82,6 +83,13 @@ export default function DashboardPage() {
                 value={metrics?.average_confidence != null ? formatPercent(metrics.average_confidence) : "—"}
                 icon={Gauge}
                 tone="emerald"
+              />
+              <MetricCard
+                label="Correction rate"
+                value={correctionStats.data ? formatPercent(correctionStats.data.correction_rate) : "—"}
+                hint={correctionStats.data ? `${correctionStats.data.total_corrected_records} of ${correctionStats.data.total_classified} classified` : "Human-in-the-loop accuracy signal"}
+                icon={CheckCheck}
+                tone="slate"
               />
             </div>
 

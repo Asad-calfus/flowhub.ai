@@ -16,3 +16,11 @@ class CustomerRiskOut(BaseModel):
     negative_count: int
     high_urgency_count: int
     last_feedback_sentiment: Optional[str] = None
+    suggested_action: str
+    reviewed: bool = False
+
+
+class ReviewRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    reviewed_by: Optional[str] = None

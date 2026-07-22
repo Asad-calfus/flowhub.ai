@@ -174,6 +174,12 @@ export const api = {
 
   getCustomerRisk: (customerId: string) => request<CustomerRiskOut>(`/churn/customers/${customerId}`),
 
+  markCustomerReviewed: (customerId: string, reviewedBy?: string) =>
+    request<CustomerRiskOut>(`/churn/customers/${customerId}/review`, {
+      method: "POST",
+      body: JSON.stringify({ reviewed_by: reviewedBy ?? null }),
+    }),
+
   askCopilot: (payload: CopilotAskRequest) =>
     request<CopilotAnswerOut>("/copilot/ask", { method: "POST", body: JSON.stringify(payload) }),
 };

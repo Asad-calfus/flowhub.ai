@@ -71,6 +71,15 @@ def test_list_feedback_filter_by_customer_tier(client):
     assert body["items"][0]["customer_tier"] == "Enterprise"
 
 
+def test_list_feedback_filter_by_customer_id(client):
+    _create(client, customer_id="CUST-1")
+    _create(client, customer_id="CUST-2")
+    resp = client.get("/api/v1/feedback", params={"customer_id": "CUST-1"})
+    body = resp.json()
+    assert body["total"] == 1
+    assert body["items"][0]["customer_id"] == "CUST-1"
+
+
 def test_list_feedback_invalid_page_size_rejected(client):
     resp = client.get("/api/v1/feedback", params={"page_size": 0})
     assert resp.status_code == 422

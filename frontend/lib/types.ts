@@ -93,6 +93,7 @@ export interface FeedbackListFilters {
   category?: string;
   product_module?: string;
   customer_tier?: string;
+  customer_id?: string;
   processing_status?: string;
   date_from?: string;
   date_to?: string;
@@ -381,6 +382,8 @@ export interface CustomerRiskOut {
   negative_count: number;
   high_urgency_count: number;
   last_feedback_sentiment: string | null;
+  suggested_action: string;
+  reviewed: boolean;
 }
 
 // --- AI Copilot ---

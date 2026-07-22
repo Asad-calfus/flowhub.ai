@@ -43,6 +43,8 @@ class CustomerRiskScore:
     negative_count: int
     high_urgency_count: int
     last_feedback_sentiment: str | None
+    suggested_action: str
+    reviewed: bool = False  # filled in by app/services/churn_service.py, not scoring logic
 
 
 def _risk_level(score: int) -> RiskLevel:
@@ -51,6 +53,16 @@ def _risk_level(score: int) -> RiskLevel:
     if score >= MEDIUM_RISK_THRESHOLD:
         return "Medium"
     return "Low"
+
+
+def _suggested_action(risk_level: RiskLevel, customer_tier: str | None) -> str:
+    """Rule-based only, same "no LLM" stance as the score itself - a human still reviews
+    and marks it handled (see ChurnReview) before anything is considered done."""
+    if risk_level == "High":
+        return "Escalate to account manager immediately" if customer_tier == "Enterprise" else "Reach out proactively"
+    if risk_level == "Medium":
+        return "Monitor and follow up"
+    return "No action needed"
 
 
 def score_customer(inputs: CustomerRiskInputs) -> CustomerRiskScore:
@@ -67,13 +79,15 @@ def score_customer(inputs: CustomerRiskInputs) -> CustomerRiskScore:
         )
         risk_score = round(min(1.0, blended) * 100)
 
+    risk_level = _risk_level(risk_score)
     return CustomerRiskScore(
         customer_id=inputs.customer_id,
         customer_tier=inputs.customer_tier,
         risk_score=risk_score,
-        risk_level=_risk_level(risk_score),
+        risk_level=risk_level,
         total_feedback=inputs.total_feedback,
         negative_count=inputs.negative_count,
         high_urgency_count=inputs.high_urgency_count,
         last_feedback_sentiment=inputs.last_feedback_sentiment,
+        suggested_action=_suggested_action(risk_level, inputs.customer_tier),
     )

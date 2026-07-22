@@ -7,6 +7,17 @@ def test_all_negative_recent_high_urgency_is_high_risk():
     assert result.risk_level == "High"
 
 
+def test_suggested_action_escalates_enterprise_high_risk():
+    result = score_customer(CustomerRiskInputs("C1", "Enterprise", 4, 4, 4, "Negative"))
+    assert result.suggested_action == "Escalate to account manager immediately"
+    assert result.reviewed is False
+
+
+def test_suggested_action_for_non_enterprise_high_risk():
+    result = score_customer(CustomerRiskInputs("C1", "Pro", 4, 4, 4, "Negative"))
+    assert result.suggested_action == "Reach out proactively"
+
+
 def test_no_feedback_is_zero_risk():
     result = score_customer(CustomerRiskInputs("C2", None, 0, 0, 0, None))
     assert result.risk_score == 0

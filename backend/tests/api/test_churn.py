@@ -46,6 +46,23 @@ def test_unknown_customer_returns_404(client):
     assert resp.status_code == 404
 
 
+def test_mark_customer_reviewed(client, db_session):
+    _seed(db_session, "FB-C30", "CUST-REV", 2, sentiment="Negative", urgency="High")
+    db_session.commit()
+
+    resp = client.post("/api/v1/churn/customers/CUST-REV/review", json={"reviewed_by": "alice"})
+    assert resp.status_code == 200
+    assert resp.json()["reviewed"] is True
+
+    followup = client.get("/api/v1/churn/customers/CUST-REV")
+    assert followup.json()["reviewed"] is True
+
+
+def test_review_unknown_customer_returns_404(client):
+    resp = client.post("/api/v1/churn/customers/CUST-NOPE/review", json={})
+    assert resp.status_code == 404
+
+
 def test_customer_with_no_negative_feedback_is_low_risk(client, db_session):
     _seed(db_session, "FB-C20", "CUST-HAPPY", 2, sentiment="Positive", urgency="Low")
     db_session.commit()

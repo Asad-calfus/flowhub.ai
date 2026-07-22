@@ -3,6 +3,7 @@
 Index of notable changes. Each entry links to a dated doc under `docs/changelog/` with the
 full what/why/files/verification for that change. Newest first.
 
+- [0025 — Cmd+K copilot palette, correction accuracy card, churn actions/review, customer 360](docs/changelog/0025-quick-wins-copilot-palette-churn-actions-customer-360.md)
 - [0024 — Frontend UI for corrections/churn/copilot + PDF chart visualizations](docs/changelog/0024-frontend-ui-and-pdf-charts.md)
 - [0023 — Export report as PDF + shareable signed link](docs/changelog/0023-export-pdf-report.md)
 - [0022 — AI Copilot: natural-language Q&A over feedback](docs/changelog/0022-ai-copilot.md)

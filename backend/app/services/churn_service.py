@@ -6,6 +6,7 @@ src/churn/scoring.py, kept deterministic and separate from the query.
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.repositories import churn_review as churn_review_repo
 from src.churn.scoring import CustomerRiskInputs, CustomerRiskScore, score_customer
 
 _CUSTOMER_FEEDBACK_SQL = """
@@ -38,6 +39,7 @@ _CUSTOMER_FEEDBACK_SQL = """
 
 def _all_customer_scores(db: Session, workspace_id: str) -> list[CustomerRiskScore]:
     rows = db.execute(text(_CUSTOMER_FEEDBACK_SQL), {"workspace_id": workspace_id}).all()
+    reviewed_ids = churn_review_repo.reviewed_customer_ids(db, workspace_id)
     scores = [
         score_customer(
             CustomerRiskInputs(
@@ -51,6 +53,8 @@ def _all_customer_scores(db: Session, workspace_id: str) -> list[CustomerRiskSco
         )
         for row in rows
     ]
+    for s in scores:
+        s.reviewed = s.customer_id in reviewed_ids
     scores.sort(key=lambda s: -s.risk_score)
     return scores
 
@@ -61,3 +65,8 @@ def list_at_risk_customers(db: Session, workspace_id: str = "demo", limit: int =
 
 def get_customer_risk(db: Session, customer_id: str, workspace_id: str = "demo") -> CustomerRiskScore | None:
     return next((s for s in _all_customer_scores(db, workspace_id) if s.customer_id == customer_id), None)
+
+
+def mark_customer_reviewed(db: Session, customer_id: str, workspace_id: str = "demo", reviewed_by: str | None = None) -> CustomerRiskScore | None:
+    churn_review_repo.mark_reviewed(db, workspace_id, customer_id, reviewed_by)
+    return get_customer_risk(db, customer_id, workspace_id)

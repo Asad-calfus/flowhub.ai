@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.exceptions import NotFoundError
 from app.core.workspace import get_workspace_id
-from app.schemas.churn import CustomerRiskOut
+from app.schemas.churn import CustomerRiskOut, ReviewRequest
 from app.services import churn_service
 
 router = APIRouter(prefix="/churn", tags=["churn"])
@@ -26,4 +26,15 @@ def get_customer_risk(customer_id: str, db: Session = Depends(get_db), workspace
     score = churn_service.get_customer_risk(db, customer_id, workspace_id)
     if score is None:
         raise NotFoundError("Customer", customer_id)
-    return CustomerRiskOut.model_validate(score, from_attributes=True)
+    return CustomerRiskOut.model_validate(score)
+
+
+@router.post("/customers/{customer_id}/review", response_model=CustomerRiskOut)
+def review_customer_risk(
+    customer_id: str, payload: ReviewRequest, db: Session = Depends(get_db), workspace_id: str = Depends(get_workspace_id)
+) -> CustomerRiskOut:
+    score = churn_service.mark_customer_reviewed(db, customer_id, workspace_id, payload.reviewed_by)
+    db.commit()
+    if score is None:
+        raise NotFoundError("Customer", customer_id)
+    return CustomerRiskOut.model_validate(score)

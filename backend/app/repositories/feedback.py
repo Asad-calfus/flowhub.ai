@@ -60,6 +60,7 @@ def list_filtered(
     category: Optional[str] = None,
     product_module: Optional[str] = None,
     customer_tier: Optional[str] = None,
+    customer_id: Optional[str] = None,
     processing_status: Optional[str] = None,
     date_from: Optional[datetime] = None,
     date_to: Optional[datetime] = None,
@@ -67,6 +68,8 @@ def list_filtered(
     from app.models.analysis import AnalysisResult
 
     query = select(Feedback).where(Feedback.workspace_id == workspace_id)
+    if customer_id:
+        query = query.where(Feedback.customer_id == customer_id)
     needs_analysis_join = any([sentiment, category, product_module])
     if needs_analysis_join:
         query = query.join(AnalysisResult, AnalysisResult.feedback_id == Feedback.id)
