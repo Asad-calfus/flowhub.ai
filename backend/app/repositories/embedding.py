@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.embedding import Embedding
+from app.models.feedback import Feedback
 
 
 def get(db: Session, feedback_id: str) -> Optional[Embedding]:
@@ -31,6 +32,21 @@ def nearest_neighbors(db: Session, query_vector: list[float], exclude_feedback_i
     stmt = (
         select(Embedding.feedback_id, distance)
         .where(Embedding.feedback_id != exclude_feedback_id)
+        .order_by(distance)
+        .limit(top_k)
+    )
+    return [(fid, 1.0 - dist) for fid, dist in db.execute(stmt).all()]
+
+
+def search_by_vector(db: Session, query_vector: list[float], workspace_id: str, top_k: int) -> list[tuple[str, float]]:
+    """Nearest feedback to an arbitrary query vector (e.g. an embedded free-text question),
+    scoped to one workspace - used by the AI copilot, which has no source feedback_id to
+    exclude the way `nearest_neighbors` does."""
+    distance = Embedding.vector.cosine_distance(query_vector)
+    stmt = (
+        select(Embedding.feedback_id, distance)
+        .join(Feedback, Feedback.id == Embedding.feedback_id)
+        .where(Feedback.workspace_id == workspace_id)
         .order_by(distance)
         .limit(top_k)
     )

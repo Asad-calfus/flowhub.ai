@@ -3,6 +3,7 @@
 Index of notable changes. Each entry links to a dated doc under `docs/changelog/` with the
 full what/why/files/verification for that change. Newest first.
 
+- [0022 — AI Copilot: natural-language Q&A over feedback](docs/changelog/0022-ai-copilot.md)
 - [0021 — Churn risk scoring](docs/changelog/0021-churn-risk-scoring.md)
 - [0020 — Human-in-the-loop classification corrections](docs/changelog/0020-human-in-the-loop-corrections.md)
 - [0019 — All-time report mode (whole-dataset aggregation, no date filter)](docs/changelog/0019-all-time-report-mode.md)
