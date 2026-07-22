@@ -14,6 +14,7 @@ from app.core.exceptions import (
     ClassificationUnavailableError,
     DuplicateError,
     InvalidInputError,
+    InvalidTokenError,
     NotFoundError,
 )
 from src.data_loader import REPO_ROOT
@@ -69,6 +70,11 @@ def handle_invalid_input(request: Request, exc: InvalidInputError) -> JSONRespon
 @app.exception_handler(ClassificationUnavailableError)
 def handle_classification_unavailable(request: Request, exc: ClassificationUnavailableError) -> JSONResponse:
     return JSONResponse(status_code=503, content={"detail": str(exc)})
+
+
+@app.exception_handler(InvalidTokenError)
+def handle_invalid_token(request: Request, exc: InvalidTokenError) -> JSONResponse:
+    return JSONResponse(status_code=403, content={"detail": str(exc) or "Invalid or expired share link."})
 
 
 @app.exception_handler(ClassificationFailedError)

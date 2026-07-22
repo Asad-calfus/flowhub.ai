@@ -22,3 +22,8 @@ class ClassificationUnavailableError(Exception):
 
 class ClassificationFailedError(Exception):
     """Raised when a classifier call/parse fails (e.g. invalid structured AI output)."""
+
+
+class InvalidTokenError(Exception):
+    """Raised when a signed share-link token is missing, malformed, expired, or doesn't
+    match the resource it's presented for (src/reports/signing.py)."""

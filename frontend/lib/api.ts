@@ -12,6 +12,7 @@ import type {
   RecomputeThemesResponse,
   ReportGenerationRequest,
   ReportOut,
+  ReportShareLinkOut,
   ReportSummaryOut,
   RetrievalBatchResponse,
   SimilarFeedbackOut,
@@ -123,6 +124,28 @@ export const api = {
 
   generateReport: (payload: ReportGenerationRequest) =>
     request<ReportOut>("/reports/weekly", { method: "POST", body: JSON.stringify(payload) }),
+
+  downloadReportPdf: async (id: string): Promise<Blob> => {
+    let res: Response;
+    try {
+      res = await fetch(`${BASE_URL}/reports/${id}/pdf`, { headers: workspaceHeader() });
+    } catch {
+      throw new ApiError("Could not reach the backend API. Is it running?", 0);
+    }
+    if (!res.ok) {
+      let detail = res.statusText;
+      try {
+        const body = await res.json();
+        detail = body.detail ? String(body.detail) : detail;
+      } catch {
+        // no JSON body - keep statusText
+      }
+      throw new ApiError(detail, res.status);
+    }
+    return res.blob();
+  },
+
+  createReportShareLink: (id: string) => request<ReportShareLinkOut>(`/reports/${id}/share`, { method: "POST" }),
 
   runBatchAnalysis: (method: AnalysisMethod = "baseline", live = false) =>
     request<BatchAnalysisResponse>("/analysis/batch", { method: "POST", body: JSON.stringify({ method, live }) }),

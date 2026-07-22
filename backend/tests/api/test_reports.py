@@ -113,6 +113,62 @@ def test_report_persistence_and_retrieval(client, db_session):
     assert get_resp.json()["report"]["summary_metrics"]["total_feedback"] == 1
 
 
+def test_download_report_pdf(client, db_session):
+    _seed_feedback(db_session, "FB-PDF1", 2)
+    db_session.commit()
+    create_resp = client.post("/api/v1/reports/weekly", json={"start_date": "2026-05-01", "end_date": "2026-05-07", "mode": "deterministic"})
+    report_id = create_resp.json()["id"]
+
+    resp = client.get(f"/api/v1/reports/{report_id}/pdf")
+    assert resp.status_code == 200
+    assert resp.headers["content-type"] == "application/pdf"
+    assert resp.content.startswith(b"%PDF")
+
+
+def test_download_missing_report_pdf_returns_404(client):
+    resp = client.get("/api/v1/reports/RPT-9999/pdf")
+    assert resp.status_code == 404
+
+
+def test_share_link_token_grants_pdf_access(client, db_session):
+    _seed_feedback(db_session, "FB-PDF2", 2)
+    db_session.commit()
+    create_resp = client.post("/api/v1/reports/weekly", json={"start_date": "2026-05-01", "end_date": "2026-05-07", "mode": "deterministic"})
+    report_id = create_resp.json()["id"]
+
+    share_resp = client.post(f"/api/v1/reports/{report_id}/share")
+    assert share_resp.status_code == 200
+    body = share_resp.json()
+    assert body["report_id"] == report_id
+    assert "token=" in body["path"]
+
+    resp = client.get(f"/api/v1/reports/{report_id}/pdf", params={"token": body["token"]})
+    assert resp.status_code == 200
+    assert resp.content.startswith(b"%PDF")
+
+
+def test_pdf_rejects_invalid_token(client, db_session):
+    _seed_feedback(db_session, "FB-PDF3", 2)
+    db_session.commit()
+    create_resp = client.post("/api/v1/reports/weekly", json={"start_date": "2026-05-01", "end_date": "2026-05-07", "mode": "deterministic"})
+    report_id = create_resp.json()["id"]
+
+    resp = client.get(f"/api/v1/reports/{report_id}/pdf", params={"token": "not-a-real-token"})
+    assert resp.status_code == 403
+
+
+def test_pdf_rejects_token_for_a_different_report(client, db_session):
+    _seed_feedback(db_session, "FB-PDF4", 2)
+    _seed_feedback(db_session, "FB-PDF5", 3)
+    db_session.commit()
+    report_a = client.post("/api/v1/reports/weekly", json={"start_date": "2026-05-01", "end_date": "2026-05-07", "mode": "deterministic"}).json()["id"]
+    report_b = client.post("/api/v1/reports/weekly", json={"start_date": "2026-05-01", "end_date": "2026-05-07", "mode": "deterministic", "product_module": "Billing"}).json()["id"]
+
+    token = client.post(f"/api/v1/reports/{report_a}/share").json()["token"]
+    resp = client.get(f"/api/v1/reports/{report_b}/pdf", params={"token": token})
+    assert resp.status_code == 403
+
+
 def test_get_missing_report_returns_404(client):
     resp = client.get("/api/v1/reports/RPT-9999")
     assert resp.status_code == 404

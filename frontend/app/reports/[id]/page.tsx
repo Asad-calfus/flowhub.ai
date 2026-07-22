@@ -3,8 +3,8 @@
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { FileCode2, Gauge, Inbox, LayoutList, TriangleAlert } from "lucide-react";
-import { api } from "@/lib/api";
+import { Download, FileCode2, Gauge, Inbox, LayoutList, Share2, TriangleAlert } from "lucide-react";
+import { api, ApiError } from "@/lib/api";
 import { useApi } from "@/lib/useApi";
 import { PageHeader } from "@/components/PageHeader";
 import { ErrorState, SkeletonBlock } from "@/components/States";
@@ -57,8 +57,37 @@ export default function ReportDetailPage() {
   const id = params.id;
   const { data, loading, error, retry } = useApi(() => api.getReport(id), [id]);
   const [showMarkdown, setShowMarkdown] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+  const [shareStatus, setShareStatus] = useState<string | null>(null);
 
   const report = data?.report;
+
+  const handleDownloadPdf = async () => {
+    setPdfError(null);
+    try {
+      const blob = await api.downloadReportPdf(id);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${id}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setPdfError(err instanceof ApiError ? err.message : "Failed to download PDF.");
+    }
+  };
+
+  const handleCopyShareLink = async () => {
+    setShareStatus(null);
+    try {
+      const link = await api.createReportShareLink(id);
+      const fullUrl = `${window.location.origin}${link.path}`;
+      await navigator.clipboard.writeText(fullUrl);
+      setShareStatus("Link copied (valid 7 days)");
+    } catch (err) {
+      setShareStatus(err instanceof ApiError ? err.message : "Failed to create share link.");
+    }
+  };
 
   return (
     <div>
@@ -73,20 +102,34 @@ export default function ReportDetailPage() {
         }
         action={
           data && (
-            <button onClick={() => setShowMarkdown((v) => !v)} className="btn-secondary">
-              {showMarkdown ? (
-                <>
-                  <LayoutList className="h-4 w-4" /> Structured view
-                </>
-              ) : (
-                <>
-                  <FileCode2 className="h-4 w-4" /> Markdown
-                </>
-              )}
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <button onClick={handleDownloadPdf} className="btn-secondary">
+                <Download className="h-4 w-4" /> Download PDF
+              </button>
+              <button onClick={handleCopyShareLink} className="btn-secondary">
+                <Share2 className="h-4 w-4" /> Share link
+              </button>
+              <button onClick={() => setShowMarkdown((v) => !v)} className="btn-secondary">
+                {showMarkdown ? (
+                  <>
+                    <LayoutList className="h-4 w-4" /> Structured view
+                  </>
+                ) : (
+                  <>
+                    <FileCode2 className="h-4 w-4" /> Markdown
+                  </>
+                )}
+              </button>
+            </div>
           )
         }
       />
+      {(pdfError || shareStatus) && (
+        <div className="mx-auto max-w-6xl px-6 pt-4 text-sm">
+          {pdfError && <p className="text-rose-600">{pdfError}</p>}
+          {shareStatus && <p className="text-slate-600">{shareStatus}</p>}
+        </div>
+      )}
       <div className="mx-auto max-w-6xl space-y-6 p-6">
         {error && <ErrorState message={error} onRetry={retry} />}
         {loading && !error && <SkeletonBlock rows={10} />}

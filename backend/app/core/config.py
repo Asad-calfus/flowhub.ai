@@ -11,6 +11,10 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str = "postgresql+psycopg://flowhub:flowhub@localhost:5433/flowhub"
 
+    # Signs shareable report-PDF links (src/reports/signing.py) - not a general auth secret,
+    # this app has none (see app/core/workspace.py). Override in production .env.
+    SECRET_KEY: str = "dev-insecure-secret-change-me"
+
     # Comma-separated origins, e.g. "http://localhost:3000,http://localhost:5173"
     CORS_ORIGINS: str = "http://localhost:3000"
 

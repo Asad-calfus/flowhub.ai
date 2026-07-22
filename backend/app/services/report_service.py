@@ -3,11 +3,12 @@ generator). No aggregation/analytics logic lives here or in the route."""
 
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import ClassificationFailedError, ClassificationUnavailableError, NotFoundError
+from app.core.exceptions import ClassificationFailedError, ClassificationUnavailableError, InvalidTokenError, NotFoundError
 from app.models.report import Report
 from app.repositories import report as report_repo
 from app.schemas.report import ReportGenerationRequest
-from src.reports import aggregator, evidence_builder, generator
+from src.reports import aggregator, evidence_builder, generator, pdf_renderer, signing
+from src.reports.schemas import WeeklyReport
 
 
 def generate_report(db: Session, request: ReportGenerationRequest, workspace_id: str = "demo") -> Report:
@@ -62,3 +63,15 @@ def get_report(db: Session, report_id: str) -> Report:
 
 def list_reports(db: Session, page: int, page_size: int, workspace_id: str = "demo") -> tuple[list[Report], int]:
     return report_repo.list_all(db, page, page_size, workspace_id)
+
+
+def render_report_pdf(db: Session, report_id: str, token: str | None = None) -> bytes:
+    report = get_report(db, report_id)
+    if token is not None and not signing.verify_signed_token(token, report_id):
+        raise InvalidTokenError("Share link is invalid or has expired.")
+    return pdf_renderer.render_pdf(WeeklyReport(**report.report_json))
+
+
+def create_share_link(db: Session, report_id: str) -> tuple[str, int]:
+    get_report(db, report_id)  # 404s if missing
+    return signing.sign_report_id(report_id)

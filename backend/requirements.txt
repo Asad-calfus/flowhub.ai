@@ -16,3 +16,4 @@ psycopg[binary]>=3.2
 pgvector>=0.3
 httpx>=0.27
 python-multipart>=0.0.9
+reportlab>=4.0

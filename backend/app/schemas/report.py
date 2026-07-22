@@ -42,6 +42,15 @@ class ReportSummaryOut(BaseModel):
     created_at: datetime
 
 
+class ReportShareLinkOut(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    report_id: str
+    token: str
+    path: str  # relative API path, e.g. "/reports/RPT-0001/pdf?token=..." - append to your API base URL
+    expires_at: datetime
+
+
 class ReportOut(ReportSummaryOut):
     report: WeeklyReport
     markdown: str

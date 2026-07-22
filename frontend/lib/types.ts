@@ -275,6 +275,13 @@ export interface ReportOut extends ReportSummaryOut {
   markdown: string;
 }
 
+export interface ReportShareLinkOut {
+  report_id: string;
+  token: string;
+  path: string;
+  expires_at: string;
+}
+
 export interface ReportGenerationRequest {
   // Omit both for an all-time report over every stored feedback record.
   start_date?: string | null;
