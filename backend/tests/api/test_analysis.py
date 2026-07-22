@@ -38,12 +38,9 @@ def test_live_llm_without_api_key_returns_503(client, monkeypatch):
     # Isolated from whatever provider/key is configured in the real .env (e.g. a Groq key
     # for scripts/pipeline/run_llm.py) - this test asserts the "no key at all" case
     # specifically, not whatever happens to be ambient in this dev environment.
-    from app.services import analysis_service
-
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
-    monkeypatch.setattr(analysis_service, "_llm_classifier", None)
 
     feedback_id = _create_feedback(client)
     resp = client.post(f"/api/v1/analysis/{feedback_id}", json={"method": "llm", "live": True})
@@ -105,3 +102,60 @@ def test_estimate_reflects_configured_key(client, monkeypatch):
     body = resp.json()
     assert body["provider"] == "openai"
     assert body["configured"] is True
+
+
+def test_correct_classification_updates_live_analysis(client):
+    feedback_id = _create_feedback(client)
+    client.post(f"/api/v1/analysis/{feedback_id}", json={"method": "baseline"})
+    original_sentiment = client.get(f"/api/v1/analysis/{feedback_id}").json()["sentiment"]
+    new_sentiment = "Negative" if original_sentiment != "Negative" else "Positive"
+
+    resp = client.patch(f"/api/v1/analysis/{feedback_id}/classification", json={"field": "sentiment", "corrected_value": new_sentiment})
+    assert resp.status_code == 200
+    assert resp.json()["sentiment"] == new_sentiment
+    assert resp.json()["model_name"] == "human_correction"
+
+    latest = client.get(f"/api/v1/analysis/{feedback_id}").json()
+    assert latest["sentiment"] == new_sentiment
+
+
+def test_correct_classification_rejects_invalid_value(client):
+    feedback_id = _create_feedback(client)
+    client.post(f"/api/v1/analysis/{feedback_id}", json={"method": "baseline"})
+    resp = client.patch(f"/api/v1/analysis/{feedback_id}/classification", json={"field": "sentiment", "corrected_value": "Furious"})
+    assert resp.status_code == 422
+
+
+def test_correct_classification_without_prior_analysis_returns_404(client):
+    feedback_id = _create_feedback(client)
+    resp = client.patch(f"/api/v1/analysis/{feedback_id}/classification", json={"field": "sentiment", "corrected_value": "Negative"})
+    assert resp.status_code == 404
+
+
+def test_list_corrections_returns_audit_trail(client):
+    feedback_id = _create_feedback(client)
+    client.post(f"/api/v1/analysis/{feedback_id}", json={"method": "baseline"})
+    client.patch(f"/api/v1/analysis/{feedback_id}/classification", json={"field": "urgency", "corrected_value": "High", "corrected_by": "alice"})
+
+    resp = client.get(f"/api/v1/analysis/{feedback_id}/corrections")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert len(body) == 1
+    assert body[0]["field"] == "urgency"
+    assert body[0]["corrected_value"] == "High"
+    assert body[0]["corrected_by"] == "alice"
+
+
+def test_correction_stats_reflects_corrected_records(client):
+    feedback_id = _create_feedback(client)
+    client.post(f"/api/v1/analysis/{feedback_id}", json={"method": "baseline"})
+    client.patch(f"/api/v1/analysis/{feedback_id}/classification", json={"field": "urgency", "corrected_value": "High"})
+    _create_feedback(client, text="Another record, not corrected.")
+
+    resp = client.get("/api/v1/analysis/corrections/stats")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["total_classified"] == 1
+    assert body["total_corrected_records"] == 1
+    assert body["correction_rate"] == 1.0
+    assert body["corrections_by_field"] == {"urgency": 1}

@@ -3,6 +3,7 @@
 Index of notable changes. Each entry links to a dated doc under `docs/changelog/` with the
 full what/why/files/verification for that change. Newest first.
 
+- [0020 — Human-in-the-loop classification corrections](docs/changelog/0020-human-in-the-loop-corrections.md)
 - [0019 — All-time report mode (whole-dataset aggregation, no date filter)](docs/changelog/0019-all-time-report-mode.md)
 - [0018 — Demo reset with a rolling 4-week window, local/API processing toggle, OpenAI default](docs/changelog/0018-demo-reset-4-week-window-and-processing-mode-toggle.md)
 - [0017 — Groq provider for the classifier + first live LLM run](docs/changelog/0017-groq-classifier-provider.md)
