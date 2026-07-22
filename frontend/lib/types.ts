@@ -340,3 +340,67 @@ export interface RecomputeThemesResponse {
   feedback_assigned: number;
   feedback_unclustered: number;
 }
+
+// --- Human-in-the-loop corrections ---
+
+export type CorrectableField = "feedback_type" | "category" | "product_module" | "sentiment" | "urgency";
+
+export interface CorrectionRequest {
+  field: CorrectableField;
+  corrected_value: string;
+  corrected_by?: string | null;
+}
+
+export interface CorrectionOut {
+  id: number;
+  feedback_id: string;
+  field: CorrectableField;
+  original_value: string;
+  corrected_value: string;
+  corrected_by: string | null;
+  created_at: string;
+}
+
+export interface CorrectionStatsOut {
+  total_classified: number;
+  total_corrected_records: number;
+  correction_rate: number;
+  corrections_by_field: Record<string, number>;
+}
+
+// --- Churn risk ---
+
+export type RiskLevel = "Low" | "Medium" | "High";
+
+export interface CustomerRiskOut {
+  customer_id: string;
+  customer_tier: string | null;
+  risk_score: number;
+  risk_level: RiskLevel;
+  total_feedback: number;
+  negative_count: number;
+  high_urgency_count: number;
+  last_feedback_sentiment: string | null;
+}
+
+// --- AI Copilot ---
+
+export interface CopilotAskRequest {
+  question: string;
+  top_k?: number;
+  live?: boolean;
+}
+
+export interface CopilotSource {
+  feedback_id: string;
+  text_preview: string;
+  sentiment: string | null;
+  similarity_score: number;
+}
+
+export interface CopilotAnswerOut {
+  question: string;
+  answer: string;
+  model_name: string;
+  sources: CopilotSource[];
+}

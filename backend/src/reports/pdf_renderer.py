@@ -7,6 +7,9 @@ here already exists on the `WeeklyReport` passed in - nothing is computed or rew
 import io
 from xml.sax.saxutils import escape as _xml_escape
 
+from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.graphics.charts.piecharts import Pie
+from reportlab.graphics.shapes import Drawing, String
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
@@ -14,6 +17,16 @@ from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 from src.reports.schemas import WeeklyReport
+
+# Same categorical palette as frontend/components/charts/SentimentChart.tsx - keep both in
+# sync so a sentiment breakdown reads identically in the web view and the PDF export.
+_SENTIMENT_COLORS = {
+    "Positive": colors.HexColor("#008300"),
+    "Neutral": colors.HexColor("#2a78d6"),
+    "Negative": colors.HexColor("#e34948"),
+    "Mixed": colors.HexColor("#4a3aa7"),
+}
+_BAR_COLOR = colors.HexColor("#0ca678")  # matches the module-distribution bar chart on the report detail page
 
 _styles = getSampleStyleSheet()
 _H1 = ParagraphStyle("ReportH1", parent=_styles["Heading1"], spaceAfter=10)
@@ -52,6 +65,54 @@ def _insight_block(title: str, description: str, evidence) -> list:
         Paragraph(_esc(description), _BODY),
         Paragraph(_esc(_evidence_line(evidence)), _EVIDENCE),
     ]
+
+
+def _sentiment_pie_chart(distribution: dict) -> Drawing | None:
+    """Same data as SummaryMetrics.sentiment_distribution - a fraction per sentiment
+    label. Returns None (renders nothing) when there's no data, rather than an empty chart."""
+    data = [(name, value) for name, value in distribution.items() if value > 0]
+    if not data:
+        return None
+
+    drawing = Drawing(460, 170)
+    pie = Pie()
+    pie.x, pie.y = 55, 15
+    pie.width = pie.height = 140
+    pie.data = [value for _, value in data]
+    pie.labels = [f"{name} ({value * 100:.0f}%)" for name, value in data]
+    pie.slices.strokeWidth = 0.5
+    pie.slices.strokeColor = colors.white
+    for i, (name, _) in enumerate(data):
+        pie.slices[i].fillColor = _SENTIMENT_COLORS.get(name, colors.grey)
+    drawing.add(pie)
+    drawing.add(String(230, 155, "Sentiment distribution", fontSize=9, fillColor=colors.grey))
+    return drawing
+
+
+def _distribution_bar_chart(title: str, data: dict, max_bars: int = 8) -> Drawing | None:
+    """Same shape as DistributionBarChart.tsx - a labeled count per category, sorted
+    descending and capped so the x-axis stays readable in a fixed-width PDF page."""
+    if not data:
+        return None
+    items = sorted(data.items(), key=lambda kv: -kv[1])[:max_bars]
+
+    drawing = Drawing(460, 210)
+    chart = VerticalBarChart()
+    chart.x, chart.y = 45, 45
+    chart.width, chart.height = 400, 130
+    chart.data = [[value for _, value in items]]
+    chart.categoryAxis.categoryNames = [str(name) for name, _ in items]
+    chart.categoryAxis.labels.angle = 30
+    chart.categoryAxis.labels.dy = -12
+    chart.categoryAxis.labels.dx = -4
+    chart.categoryAxis.labels.fontSize = 7
+    chart.categoryAxis.labels.textAnchor = "end"
+    chart.valueAxis.valueMin = 0
+    chart.valueAxis.labels.fontSize = 7
+    chart.bars[0].fillColor = _BAR_COLOR
+    drawing.add(chart)
+    drawing.add(String(45, 195, title, fontSize=9, fillColor=colors.grey))
+    return drawing
 
 
 def render_pdf(report: WeeklyReport) -> bytes:
@@ -95,6 +156,14 @@ def render_pdf(report: WeeklyReport) -> bytes:
         )
     )
     story.append(metrics_table)
+    story.append(Spacer(1, 10))
+
+    sentiment_chart = _sentiment_pie_chart(m.sentiment_distribution)
+    if sentiment_chart is not None:
+        story.append(sentiment_chart)
+    module_chart = _distribution_bar_chart("Feedback by product module", m.feedback_by_product_module)
+    if module_chart is not None:
+        story.append(module_chart)
 
     sections = [
         ("3. Top Customer Pain Points", report.top_pain_points, False),
@@ -109,6 +178,11 @@ def render_pdf(report: WeeklyReport) -> bytes:
     ]
     for heading, items, is_action in sections:
         story.append(Paragraph(heading, _H2))
+        if heading.startswith("5.") and report.most_negative_modules:
+            negative_ratios = {i.product_module: round(i.negative_ratio * 100, 1) for i in report.most_negative_modules}
+            chart = _distribution_bar_chart("% negative sentiment by module", negative_ratios)
+            if chart is not None:
+                story.append(chart)
         if not items:
             story.append(Paragraph("None in this period.", _BODY))
             continue

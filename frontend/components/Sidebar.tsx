@@ -4,12 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
+  AlertTriangle,
   BarChart3,
   Home,
   Inbox,
   LayoutDashboard,
   Menu,
   MessagesSquare,
+  Sparkles,
   Tags,
   FileText,
   X,
@@ -22,6 +24,8 @@ const NAV_ITEMS = [
   { href: "/feedback", label: "Feedback Inbox", icon: Inbox },
   { href: "/themes", label: "Themes", icon: Tags },
   { href: "/reports", label: "Weekly Reports", icon: FileText },
+  { href: "/churn", label: "Churn Risk", icon: AlertTriangle },
+  { href: "/copilot", label: "AI Copilot", icon: Sparkles },
   { href: "/evaluation", label: "Evaluation", icon: BarChart3 },
 ];
 

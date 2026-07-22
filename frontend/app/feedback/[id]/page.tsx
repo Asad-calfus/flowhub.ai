@@ -10,8 +10,9 @@ import { useApi } from "@/lib/useApi";
 import { PageHeader } from "@/components/PageHeader";
 import { ErrorState, SkeletonBlock } from "@/components/States";
 import { ConfidenceBar, SentimentBadge, UrgencyBadge } from "@/components/Badges";
+import { CorrectionEditor } from "@/components/CorrectionEditor";
 import { formatConfidence, formatDate, formatDateTime } from "@/lib/formatters";
-import type { AnalysisOut, ThemeOut } from "@/lib/types";
+import type { AnalysisOut, CorrectionOut, ThemeOut } from "@/lib/types";
 
 function SectionTitle({ icon: Icon, children }: { icon: LucideIcon; children: React.ReactNode }) {
   return (
@@ -36,6 +37,8 @@ async function loadDetail(id: string) {
     if (!(err instanceof ApiError) || err.status !== 404) throw err;
   }
 
+  const corrections: CorrectionOut[] = analysis ? await api.listCorrections(id).catch(() => []) : [];
+
   // No single-feedback "which theme is this in" endpoint exists yet, so we
   // cross-reference the (small) themes list - see PROJECT_CONTEXT.md notes.
   let theme: ThemeOut | null = null;
@@ -48,7 +51,7 @@ async function loadDetail(id: string) {
     theme = null;
   }
 
-  return { feedback, similar, contextMatches, analysis, theme };
+  return { feedback, similar, contextMatches, analysis, corrections, theme };
 }
 
 export default function FeedbackDetailPage() {
@@ -144,6 +147,9 @@ export default function FeedbackDetailPage() {
                     {formatDateTime(data.analysis.created_at)}
                   </div>
                 </div>
+              )}
+              {data.analysis && (
+                <CorrectionEditor feedbackId={id} analysis={data.analysis} corrections={data.corrections} onCorrected={retry} />
               )}
             </section>
 

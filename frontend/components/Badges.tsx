@@ -25,6 +25,18 @@ export function UrgencyBadge({ urgency }: { urgency: string | null | undefined }
   return <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${color}`}>{urgency}</span>;
 }
 
+const RISK_COLORS: Record<string, string> = {
+  Low: "bg-slate-100 text-slate-700",
+  Medium: "bg-amber-100 text-amber-800",
+  High: "bg-rose-100 text-rose-800",
+};
+
+export function RiskBadge({ level }: { level: string | null | undefined }) {
+  if (!level) return <span className="text-xs text-slate-400">—</span>;
+  const color = RISK_COLORS[level] || "bg-slate-100 text-slate-700";
+  return <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${color}`}>{level}</span>;
+}
+
 const TREND_STYLES: Record<string, { color: string; icon: typeof Sparkles }> = {
   new: { color: "bg-brand-100 text-brand-700", icon: Sparkles },
   growing: { color: "bg-amber-100 text-amber-800", icon: TrendingUp },

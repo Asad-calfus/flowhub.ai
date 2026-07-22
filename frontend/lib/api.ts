@@ -3,7 +3,13 @@ import type {
   AnalysisOut,
   BatchAnalysisResponse,
   ContextMatchSummary,
+  CopilotAnswerOut,
+  CopilotAskRequest,
+  CorrectionOut,
+  CorrectionRequest,
+  CorrectionStatsOut,
   CostEstimate,
+  CustomerRiskOut,
   FeedbackListFilters,
   FeedbackOut,
   HealthStatus,
@@ -156,6 +162,20 @@ export const api = {
     request<RetrievalBatchResponse>("/feedback/retrieval/batch", { method: "POST", body: JSON.stringify({}) }),
 
   recomputeThemes: () => request<RecomputeThemesResponse>("/themes/recompute", { method: "POST" }),
+
+  correctClassification: (feedbackId: string, payload: CorrectionRequest) =>
+    request<AnalysisOut>(`/analysis/${feedbackId}/classification`, { method: "PATCH", body: JSON.stringify(payload) }),
+
+  listCorrections: (feedbackId: string) => request<CorrectionOut[]>(`/analysis/${feedbackId}/corrections`),
+
+  getCorrectionStats: () => request<CorrectionStatsOut>("/analysis/corrections/stats"),
+
+  listAtRiskCustomers: (limit = 20) => request<CustomerRiskOut[]>(`/churn/customers${queryString({ limit })}`),
+
+  getCustomerRisk: (customerId: string) => request<CustomerRiskOut>(`/churn/customers/${customerId}`),
+
+  askCopilot: (payload: CopilotAskRequest) =>
+    request<CopilotAnswerOut>("/copilot/ask", { method: "POST", body: JSON.stringify(payload) }),
 };
 
 export function backendStatusUrl(): string {
