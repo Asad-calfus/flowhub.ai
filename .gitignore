@@ -4,6 +4,7 @@ __pycache__/
 .env
 backend/results/cache/
 backend/results/retrieval/cache/
+backend/results/logs/
 .pytest_cache/
 .DS_Store
 .claude/

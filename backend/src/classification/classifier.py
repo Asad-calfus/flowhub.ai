@@ -3,6 +3,7 @@ local caching, and dry-run mode for development without API calls.
 """
 
 import json
+import logging
 import os
 import time
 from dataclasses import dataclass, field
@@ -22,6 +23,8 @@ DEFAULT_CACHE_PATH = os.path.join(REPO_ROOT, "results", "cache", "llm_cache.json
 
 MAX_ATTEMPTS = 2  # one initial call + one retry
 
+_run_logger = logging.getLogger("classification.runs")
+
 
 @dataclass
 class ClassificationResult:
@@ -35,6 +38,20 @@ class ClassificationResult:
     from_cache: bool = False
     dry_run: bool = False
     raw_response: Optional[str] = None
+
+
+def _log_classification(model: str, result: "ClassificationResult") -> None:
+    _run_logger.info(json.dumps({
+        "record_id": result.feedback_id,
+        "model": model,
+        "input_tokens": result.input_tokens,
+        "output_tokens": result.output_tokens,
+        "latency_seconds": round(result.latency_seconds, 4),
+        "predicted_label": result.output.feedback_type if result.output else None,
+        "cache_hit": result.from_cache,
+        "dry_run": result.dry_run,
+        "error": result.error,
+    }))
 
 
 def _strip_json_fences(text: str) -> str:
@@ -156,7 +173,7 @@ class FewShotClassifier:
         if not force and feedback_id in self.cache:
             cached = self.cache[feedback_id]
             if cached.get("output") is not None:
-                return ClassificationResult(
+                result = ClassificationResult(
                     feedback_id=feedback_id,
                     output=ClassificationOutput(**cached["output"]),
                     retries=cached.get("retries", 0),
@@ -166,6 +183,8 @@ class FewShotClassifier:
                     from_cache=True,
                     dry_run=cached.get("dry_run", False),
                 )
+                _log_classification(self.model, result)
+                return result
 
         payload = record.model_dump()
         assert_no_leakage(payload)
@@ -207,6 +226,7 @@ class FewShotClassifier:
                     "dry_run": self.dry_run,
                 }
                 self._save_cache()
+                _log_classification(self.model, result)
                 return result
             except (json.JSONDecodeError, ValidationError) as exc:
                 last_error = str(exc)
@@ -223,7 +243,7 @@ class FewShotClassifier:
             "raw_response": raw_response,
         }
         self.failures.append(failure)
-        return ClassificationResult(
+        result = ClassificationResult(
             feedback_id=feedback_id,
             output=None,
             error=last_error,
@@ -234,3 +254,5 @@ class FewShotClassifier:
             dry_run=self.dry_run,
             raw_response=raw_response,
         )
+        _log_classification(self.model, result)
+        return result
