@@ -1,3 +1,6 @@
+import logging
+import os
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -13,8 +16,28 @@ from app.core.exceptions import (
     InvalidInputError,
     NotFoundError,
 )
+from src.data_loader import REPO_ROOT
+from src.logging_utils import get_jsonl_logger
+
+_LOGS_DIR = os.path.join(REPO_ROOT, "results", "logs")
+os.makedirs(_LOGS_DIR, exist_ok=True)
 
 app = FastAPI(title=settings.APP_NAME)
+
+# Same JSON-Lines classification log the CLI pipeline (scripts/pipeline/run_llm.py) writes
+# to - attached here too so classification runs triggered live over the API (batch or
+# single) are captured in the same file, not just offline pipeline runs.
+get_jsonl_logger("classification.runs", os.path.join(_LOGS_DIR, "classification_runs.jsonl"))
+
+# App-wide log file: every HTTP request (uvicorn.access), startup/shutdown/error output
+# (uvicorn/uvicorn.error), and any module-level `logging.getLogger(__name__)` call anywhere
+# in the app (root) - not just classification runs. `docker compose logs backend` shows the
+# same lines live but doesn't persist past container recreation; this file does.
+_app_log_handler = logging.FileHandler(os.path.join(_LOGS_DIR, "app.log"), encoding="utf-8")
+_app_log_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s"))
+for _logger_name in ("", "uvicorn", "uvicorn.error", "uvicorn.access"):
+    logging.getLogger(_logger_name).addHandler(_app_log_handler)
+logging.getLogger().setLevel(logging.INFO)
 
 app.add_middleware(
     CORSMiddleware,
@@ -56,3 +79,11 @@ def handle_classification_failed(request: Request, exc: ClassificationFailedErro
 @app.exception_handler(OperationalError)
 def handle_db_connection_error(request: Request, exc: OperationalError) -> JSONResponse:
     return JSONResponse(status_code=503, content={"detail": "Database connection failure."})
+
+
+@app.exception_handler(Exception)
+def handle_unexpected_error(request: Request, exc: Exception) -> JSONResponse:
+    """Last-resort handler: any exception not covered above (e.g. a bad value slipping past
+    validation somewhere) becomes a logged 500, not a dropped/reset connection."""
+    logging.getLogger("app.error").exception("Unhandled exception on %s %s", request.method, request.url.path)
+    return JSONResponse(status_code=500, content={"detail": "Internal server error."})

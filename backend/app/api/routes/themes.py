@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.core.database import get_db
+from app.core.workspace import get_workspace_id
 from app.schemas.common import Page
 from app.schemas.feedback import FeedbackOut
-from app.schemas.theme import ThemeDetailOut, ThemeOut
+from app.schemas.theme import RecomputeThemesResponse, ThemeDetailOut, ThemeOut
 from app.services import theme_service
 
 router = APIRouter(prefix="/themes", tags=["themes"])
@@ -14,11 +15,21 @@ router = APIRouter(prefix="/themes", tags=["themes"])
 @router.get("", response_model=Page[ThemeOut])
 def list_themes(
     db: Session = Depends(get_db),
+    workspace_id: str = Depends(get_workspace_id),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=settings.DEFAULT_PAGE_SIZE, ge=1, le=settings.MAX_PAGE_SIZE),
 ) -> Page[ThemeOut]:
-    items, total = theme_service.list_themes(db, page, page_size)
+    items, total = theme_service.list_themes(db, page, page_size, workspace_id)
     return Page(items=[ThemeOut.model_validate(i) for i in items], total=total, page=page, page_size=page_size)
+
+
+@router.post("/recompute", response_model=RecomputeThemesResponse, status_code=status.HTTP_201_CREATED)
+def recompute_themes(
+    db: Session = Depends(get_db), workspace_id: str = Depends(get_workspace_id)
+) -> RecomputeThemesResponse:
+    result = theme_service.recompute_themes(db, workspace_id)
+    db.commit()
+    return result
 
 
 @router.get("/{theme_id}", response_model=ThemeDetailOut)

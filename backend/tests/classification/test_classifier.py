@@ -143,6 +143,48 @@ def test_anthropic_provider_selects_anthropic_api_key_env_var(tmp_path, monkeypa
     assert clf._api_key_env_var() == "ANTHROPIC_API_KEY"
 
 
+def test_groq_provider_selects_groq_api_key_env_var(tmp_path, monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setenv("GROQ_API_KEY", "gsk-test-123")
+    clf = FewShotClassifier(examples=[], provider="groq", cache_path=str(tmp_path / "c.json"))
+    assert clf.api_key == "gsk-test-123"
+    assert clf._api_key_env_var() == "GROQ_API_KEY"
+
+
+def test_groq_provider_uses_openai_client_with_groq_base_url(tmp_path, monkeypatch):
+    monkeypatch.setenv("GROQ_API_KEY", "gsk-test-123")
+    clf = FewShotClassifier(examples=[], provider="groq", dry_run=False, cache_path=str(tmp_path / "c.json"))
+
+    captured = {}
+
+    class FakeCompletions:
+        def create(self, **kwargs):
+            class Choice:
+                message = type("M", (), {"content": VALID_JSON})()
+
+            class Usage:
+                prompt_tokens = 5
+                completion_tokens = 5
+
+            return type("Resp", (), {"choices": [Choice()], "usage": Usage()})()
+
+    class FakeChat:
+        completions = FakeCompletions()
+
+    class FakeOpenAI:
+        def __init__(self, api_key, timeout, base_url):
+            captured["api_key"] = api_key
+            captured["base_url"] = base_url
+            self.chat = FakeChat()
+
+    monkeypatch.setattr("openai.OpenAI", FakeOpenAI)
+    clf.classify("FB-TEST-GROQ", ClassifierInput(feedback_text="x"))
+
+    assert captured["base_url"] == "https://api.groq.com/openai/v1"
+    assert captured["api_key"] == "gsk-test-123"
+
+
 def test_dry_run_defaults_true_when_no_key_present(tmp_path, monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)

@@ -33,8 +33,12 @@ def get_many(db: Session, feedback_ids: list[str]) -> dict[str, Feedback]:
     return {f.id: f for f in db.execute(stmt).scalars().all()}
 
 
-def list_ids_by_status(db: Session, processing_status: str) -> list[str]:
-    stmt = select(Feedback.id).where(Feedback.processing_status == processing_status).order_by(Feedback.id)
+def list_ids_by_status(db: Session, processing_status: str, workspace_id: str = "demo") -> list[str]:
+    stmt = (
+        select(Feedback.id)
+        .where(Feedback.processing_status == processing_status, Feedback.workspace_id == workspace_id)
+        .order_by(Feedback.id)
+    )
     return list(db.execute(stmt).scalars().all())
 
 
@@ -50,6 +54,7 @@ def list_filtered(
     *,
     page: int,
     page_size: int,
+    workspace_id: str = "demo",
     source: Optional[str] = None,
     sentiment: Optional[str] = None,
     category: Optional[str] = None,
@@ -61,7 +66,7 @@ def list_filtered(
 ) -> tuple[list[Feedback], int]:
     from app.models.analysis import AnalysisResult
 
-    query = select(Feedback)
+    query = select(Feedback).where(Feedback.workspace_id == workspace_id)
     needs_analysis_join = any([sentiment, category, product_module])
     if needs_analysis_join:
         query = query.join(AnalysisResult, AnalysisResult.feedback_id == Feedback.id)

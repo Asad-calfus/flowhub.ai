@@ -34,5 +34,23 @@ services:
     command: >
       sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
 
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    environment:
+      # Resolved by the browser, not by this container - must be a host-reachable URL.
+      NEXT_PUBLIC_API_BASE_URL: "http://localhost:8001/api/v1"
+      # Used only by app/api/evaluation/route.ts (server-side, read-only).
+      BACKEND_RESULTS_DIR: "/backend-results"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - ./backend/results:/backend-results:ro
+
 volumes:
   flowhub_pgdata:

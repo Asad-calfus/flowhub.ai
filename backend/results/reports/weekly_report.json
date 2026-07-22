@@ -1,0 +1,357 @@
+{
+  "report_id": "RPT-0004",
+  "period": {
+    "start_date": "2026-05-04",
+    "end_date": "2026-05-10",
+    "previous_period_start": "2026-04-27",
+    "previous_period_end": "2026-05-03"
+  },
+  "product_module_filter": null,
+  "customer_tier_filter": null,
+  "executive_summary": "11 feedback item(s) received from 2026-05-04 to 2026-05-10. Dominant sentiment: Positive. 6 theme(s) tracked, 0 growing. 1 known bug(s) and 1 feature request(s) received repeated reports. 1 feedback item(s) appear to reference new, untracked issues. 0 Enterprise-tier negative report(s) this period.",
+  "summary_metrics": {
+    "total_feedback": 11,
+    "feedback_by_source": {
+      "Chat": 1,
+      "Support ticket": 5,
+      "Email": 2,
+      "Community post": 1,
+      "Survey": 2
+    },
+    "feedback_by_type": {
+      "Other": 1,
+      "Service complaint": 1,
+      "Praise": 1
+    },
+    "sentiment_distribution": {
+      "Neutral": 0.3333,
+      "Positive": 0.6667
+    },
+    "feedback_by_product_module": {
+      "Authentication": 2,
+      "Dashboard": 1
+    },
+    "feedback_by_customer_tier": {
+      "Free": 2,
+      "Enterprise": 3,
+      "Pro": 6
+    },
+    "new_issue_count": 1,
+    "low_confidence_count": 0,
+    "average_confidence": 0.7667
+  },
+  "top_pain_points": [
+    {
+      "theme_id": "THM-011",
+      "title": "sso, okta, okta sso (Authentication)",
+      "description": "3 feedback item(s) this period, trend: new.",
+      "feedback_count": 3,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {
+        "Positive": 1.0
+      },
+      "product_module": "Authentication",
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0002",
+          "FB-0097",
+          "FB-0139"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-011"
+        ],
+        "evidence_strength": "high"
+      }
+    },
+    {
+      "theme_id": "THM-001",
+      "title": "logged, update, constantly (Authentication)",
+      "description": "1 feedback item(s) this period, trend: new.",
+      "feedback_count": 1,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {
+        "Neutral": 1.0
+      },
+      "product_module": "Authentication",
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0001"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-001"
+        ],
+        "evidence_strength": "medium"
+      }
+    },
+    {
+      "theme_id": "THM-003",
+      "title": "dark, dark mode, mode (multiple modules)",
+      "description": "1 feedback item(s) this period, trend: stable, +0.0% vs previous period.",
+      "feedback_count": 1,
+      "trend": "stable",
+      "percent_change": 0.0,
+      "sentiment_distribution": {},
+      "product_module": null,
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0054"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-003"
+        ],
+        "evidence_strength": "medium"
+      }
+    },
+    {
+      "theme_id": "THM-016",
+      "title": "tasks, tracking, built time (multiple modules)",
+      "description": "1 feedback item(s) this period, trend: new.",
+      "feedback_count": 1,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {},
+      "product_module": null,
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0098"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-016"
+        ],
+        "evidence_strength": "medium"
+      }
+    },
+    {
+      "theme_id": "THM-004",
+      "title": "enterprise, pro, price (multiple modules)",
+      "description": "1 feedback item(s) this period, trend: new.",
+      "feedback_count": 1,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {},
+      "product_module": null,
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0129"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-004"
+        ],
+        "evidence_strength": "medium"
+      }
+    },
+    {
+      "theme_id": "THM-015",
+      "title": "templates save, task templates, templates (multiple modules)",
+      "description": "1 feedback item(s) this period, trend: new.",
+      "feedback_count": 1,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {},
+      "product_module": null,
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0141"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-015"
+        ],
+        "evidence_strength": "medium"
+      }
+    }
+  ],
+  "growing_themes": [
+    {
+      "theme_id": "THM-011",
+      "title": "sso, okta, okta sso (Authentication)",
+      "description": "3 feedback item(s) this period, trend: new.",
+      "feedback_count": 3,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {
+        "Positive": 1.0
+      },
+      "product_module": "Authentication",
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0002",
+          "FB-0097",
+          "FB-0139"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-011"
+        ],
+        "evidence_strength": "high"
+      }
+    },
+    {
+      "theme_id": "THM-001",
+      "title": "logged, update, constantly (Authentication)",
+      "description": "1 feedback item(s) this period, trend: new.",
+      "feedback_count": 1,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {
+        "Neutral": 1.0
+      },
+      "product_module": "Authentication",
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0001"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-001"
+        ],
+        "evidence_strength": "medium"
+      }
+    },
+    {
+      "theme_id": "THM-016",
+      "title": "tasks, tracking, built time (multiple modules)",
+      "description": "1 feedback item(s) this period, trend: new.",
+      "feedback_count": 1,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {},
+      "product_module": null,
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0098"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-016"
+        ],
+        "evidence_strength": "medium"
+      }
+    },
+    {
+      "theme_id": "THM-004",
+      "title": "enterprise, pro, price (multiple modules)",
+      "description": "1 feedback item(s) this period, trend: new.",
+      "feedback_count": 1,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {},
+      "product_module": null,
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0129"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-004"
+        ],
+        "evidence_strength": "medium"
+      }
+    },
+    {
+      "theme_id": "THM-015",
+      "title": "templates save, task templates, templates (multiple modules)",
+      "description": "1 feedback item(s) this period, trend: new.",
+      "feedback_count": 1,
+      "trend": "new",
+      "percent_change": null,
+      "sentiment_distribution": {},
+      "product_module": null,
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0141"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [
+          "THM-015"
+        ],
+        "evidence_strength": "medium"
+      }
+    }
+  ],
+  "most_negative_modules": [],
+  "feature_requests": [
+    {
+      "context_id": "FR-005",
+      "context_type": "feature_request",
+      "title": "Single sign-on with Okta",
+      "description": "1 feedback item(s) this period, trend: new. Current status: Released.",
+      "feedback_count": 1,
+      "trend": "new",
+      "status": "Released",
+      "product_module": "Authentication",
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0139"
+        ],
+        "related_context_ids": [
+          "FR-005"
+        ],
+        "related_theme_ids": [],
+        "evidence_strength": "medium"
+      }
+    }
+  ],
+  "known_bugs_growing": [
+    {
+      "context_id": "BUG-001",
+      "context_type": "known_bug",
+      "title": "SSO session expires within minutes of login",
+      "description": "1 feedback item(s) this period, trend: new. Current status: Open.",
+      "feedback_count": 1,
+      "trend": "new",
+      "status": "Open",
+      "product_module": "Authentication",
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0001"
+        ],
+        "related_context_ids": [
+          "BUG-001"
+        ],
+        "related_theme_ids": [],
+        "evidence_strength": "medium"
+      }
+    }
+  ],
+  "release_related_issues": [],
+  "enterprise_feedback": [],
+  "new_untracked_issues": [
+    {
+      "context_id": "UNCLUSTERED",
+      "context_type": "new_issue",
+      "title": "Untracked cluster: UNCLUSTERED",
+      "description": "1 feedback item(s) with no confident match to a known bug, feature request, or release.",
+      "feedback_count": 1,
+      "trend": "new",
+      "status": null,
+      "product_module": null,
+      "evidence": {
+        "representative_feedback_ids": [
+          "FB-0019"
+        ],
+        "related_context_ids": [],
+        "related_theme_ids": [],
+        "evidence_strength": "low"
+      }
+    }
+  ],
+  "recommended_actions": [],
+  "data_limitations": {
+    "notes": [
+      "8 feedback record(s) in this period have not been run through context-match retrieval yet, so they are excluded from known-bug/feature-request/new-issue counts (not counted as either matched or new).",
+      "8 feedback record(s) in this period have no stored classification result and are excluded from sentiment/type/module/confidence metrics."
+    ]
+  },
+  "generation_method": "deterministic",
+  "model_name": null,
+  "prompt_version": null,
+  "created_at": null
+}

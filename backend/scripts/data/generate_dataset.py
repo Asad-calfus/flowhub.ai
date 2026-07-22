@@ -21,8 +21,15 @@ data (names, emails, phone numbers) is included anywhere in this dataset.
 
 import csv
 import os
+from datetime import date, datetime, timedelta
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Demo dates are rescaled into a rolling 4-week (28-day) window ending today, rather
+# than the original ~6-month hand-authored spread. Keeps every re-generation "fresh"
+# for the demo and gives the weekly report a sensible amount of data per week to
+# compare week-over-week, instead of thin/uneven buckets from a 6-month spread.
+WINDOW_DAYS = 28
 
 
 def path(*parts):
@@ -611,21 +618,21 @@ FEEDBACK = [
          source="Email", created_at="2026-05-01 10:20:00", customer_id="CUST-1094", tier="Enterprise",
          module="Reports", version="v2.4.0", rating=None, language="en", ftype="Feature request",
          sentiment="Neutral", urgency="Low", theme="", context=""),
-    dict(text="SAML support specifically, not just Okta OAuth, would let us use our existing identity provider for Enterprise SSO.",
+    dict(text="SAML सपोर्ट चाहिए, सिर्फ Okta OAuth नहीं, ताकि हम अपने मौजूदा identity provider का इस्तेमाल करके Enterprise SSO सेट कर सकें।",
          source="Email", created_at="2026-05-06 09:00:00", customer_id="CUST-1095", tier="Enterprise",
-         module="Authentication", version="v2.4.0", rating=None, language="en", ftype="Feature request",
+         module="Authentication", version="v2.4.0", rating=None, language="hi", ftype="Feature request",
          sentiment="Neutral", urgency="Medium", theme="", context=""),
-    dict(text="Built-in time tracking per task instead of needing a separate tool bolted on the side would be really valuable.",
+    dict(text="Un time tracking integrato per ogni singolo task, invece di dover usare uno strumento separato, sarebbe davvero utile.",
          source="Community post", created_at="2026-05-10 14:00:00", customer_id="CUST-1096", tier="Pro",
-         module="Task Management", version="v2.4.0", rating=None, language="en", ftype="Feature request",
+         module="Task Management", version="v2.4.0", rating=None, language="it", ftype="Feature request",
          sentiment="Neutral", urgency="Low", theme="", context=""),
     dict(text="Sería genial poder invitar usuarios en bloque subiendo un CSV en lugar de invitar uno por uno.",
          source="Community post", created_at="2026-05-19 11:30:00", customer_id="CUST-1097", tier="Enterprise",
          module="Authentication", version="v2.4.0", rating=None, language="es", ftype="Feature request",
          sentiment="Neutral", urgency="Low", theme="", context=""),
-    dict(text="General-purpose webhooks beyond just Slack and Jira would let us build our own automations without waiting on official integrations.",
+    dict(text="SlackやJiraだけでなく、汎用的なWebhookがあれば、公式の統合を待たずに自分たちで自動化を構築できるのですが。",
          source="Community post", created_at="2026-05-24 09:45:00", customer_id="CUST-1098", tier="Enterprise",
-         module="Integrations", version="v2.4.0", rating=None, language="en", ftype="Feature request",
+         module="Integrations", version="v2.4.0", rating=None, language="ja", ftype="Feature request",
          sentiment="Neutral", urgency="Low", theme="", context=""),
     dict(text="Task dependencies (blocking/blocked-by relationships) that actually prevent a task from being marked done until its blockers are resolved.",
          source="Community post", created_at="2026-06-03 13:15:00", customer_id="CUST-1099", tier="Pro",
@@ -903,6 +910,26 @@ PROCESSED_COLUMNS = [
 ]
 
 
+def _rescale_created_at_dates(rows: list[dict]) -> None:
+    """Compress the hand-authored ~6-month date spread into a rolling WINDOW_DAYS
+    window ending today, in place. Rank-based on original chronological order (not a
+    proportional stretch of the original deltas), so the ~150 records land roughly
+    evenly across the window - about a week's worth per week - instead of inheriting
+    the original theme-block clustering. Original time-of-day is preserved for
+    realism; only the date component changes."""
+    parsed = [(i, datetime.strptime(row["created_at"], "%Y-%m-%d %H:%M:%S")) for i, row in enumerate(rows)]
+    parsed.sort(key=lambda pair: pair[1])
+
+    end = date.today()
+    start = end - timedelta(days=WINDOW_DAYS - 1)
+    n = len(parsed)
+    for rank, (i, original_dt) in enumerate(parsed):
+        offset_days = round(rank * (WINDOW_DAYS - 1) / (n - 1)) if n > 1 else 0
+        new_date = start + timedelta(days=offset_days)
+        new_dt = datetime.combine(new_date, original_dt.time())
+        rows[i]["created_at"] = new_dt.strftime("%Y-%m-%d %H:%M:%S")
+
+
 def build_rows():
     rows = []
     for i, rec in enumerate(FEEDBACK, start=1):
@@ -928,6 +955,7 @@ def build_rows():
             "is_gold_label": "True" if is_gold else "False",
             "label_source": "Manually verified" if is_gold else "Synthetic",
         })
+    _rescale_created_at_dates(rows)
     return rows
 
 

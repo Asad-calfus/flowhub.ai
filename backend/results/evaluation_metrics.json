@@ -361,33 +361,33 @@
   "llm": {
     "fields": {
       "feedback_type": {
-        "accuracy": 0.4,
-        "macro_precision": 0.46041666666666664,
-        "macro_recall": 0.48541666666666666,
-        "macro_f1": 0.387310606060606,
+        "accuracy": 0.8333333333333334,
+        "macro_precision": 0.8576388888888888,
+        "macro_recall": 0.8510416666666667,
+        "macro_f1": 0.8133037305831423,
         "per_class": {
           "Bug report": {
-            "precision": 0.5,
-            "recall": 0.5,
-            "f1": 0.5,
+            "precision": 0.7777777777777778,
+            "recall": 0.875,
+            "f1": 0.823529411764706,
             "support": 8
           },
           "Feature request": {
-            "precision": 0.75,
-            "recall": 0.6,
-            "f1": 0.6666666666666665,
+            "precision": 0.8333333333333334,
+            "recall": 1.0,
+            "f1": 0.9090909090909091,
             "support": 5
           },
           "Other": {
-            "precision": 0.1,
+            "precision": 1.0,
             "recall": 1.0,
-            "f1": 0.18181818181818182,
+            "f1": 1.0,
             "support": 1
           },
           "Performance issue": {
-            "precision": 1.0,
-            "recall": 0.3333333333333333,
-            "f1": 0.5,
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
             "support": 3
           },
           "Praise": {
@@ -397,54 +397,47 @@
             "support": 1
           },
           "Question": {
-            "precision": 0.5,
-            "recall": 0.25,
-            "f1": 0.3333333333333333,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
             "support": 4
           },
           "Service complaint": {
-            "precision": 0.3333333333333333,
-            "recall": 0.2,
-            "f1": 0.25,
+            "precision": 1.0,
+            "recall": 0.6,
+            "f1": 0.7499999999999999,
             "support": 5
           },
           "Usability issue": {
-            "precision": 0.0,
-            "recall": 0.0,
-            "f1": 0.0,
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
             "support": 3
           }
         },
         "confusion_matrix": {
           "Bug report": {
-            "Other": 2,
-            "Bug report": 4,
-            "Question": 1,
+            "Bug report": 7,
             "Praise": 1
           },
           "Question": {
-            "Other": 1,
-            "Question": 1,
-            "Service complaint": 2
+            "Question": 4
           },
           "Usability issue": {
-            "Other": 2,
-            "Bug report": 1
+            "Performance issue": 1,
+            "Bug report": 1,
+            "Usability issue": 1
           },
           "Service complaint": {
-            "Other": 1,
-            "Service complaint": 1,
-            "Bug report": 2,
+            "Service complaint": 3,
+            "Bug report": 1,
             "Feature request": 1
           },
           "Performance issue": {
-            "Bug report": 1,
-            "Performance issue": 1,
-            "Other": 1
+            "Performance issue": 3
           },
           "Feature request": {
-            "Feature request": 3,
-            "Other": 2
+            "Feature request": 5
           },
           "Praise": {
             "Praise": 1
@@ -456,21 +449,21 @@
         "n": 30
       },
       "category": {
-        "accuracy": 0.43333333333333335,
-        "macro_precision": 0.475,
-        "macro_recall": 0.5617424242424243,
-        "macro_f1": 0.42196969696969694,
+        "accuracy": 0.8333333333333334,
+        "macro_precision": 0.8543956043956044,
+        "macro_recall": 0.8765151515151515,
+        "macro_f1": 0.8416666666666666,
         "per_class": {
           "Inquiry": {
-            "precision": 0.5,
-            "recall": 0.25,
-            "f1": 0.3333333333333333,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
             "support": 4
           },
           "Other": {
-            "precision": 0.1,
+            "precision": 1.0,
             "recall": 1.0,
-            "f1": 0.18181818181818182,
+            "f1": 1.0,
             "support": 1
           },
           "Positive Feedback": {
@@ -480,45 +473,39 @@
             "support": 1
           },
           "Product Feedback": {
-            "precision": 0.75,
-            "recall": 0.375,
-            "f1": 0.5,
+            "precision": 0.8571428571428571,
+            "recall": 0.75,
+            "f1": 0.7999999999999999,
             "support": 8
           },
           "Support Experience": {
-            "precision": 0.3333333333333333,
-            "recall": 0.2,
-            "f1": 0.25,
+            "precision": 1.0,
+            "recall": 0.6,
+            "f1": 0.7499999999999999,
             "support": 5
           },
           "Technical Issue": {
-            "precision": 0.6666666666666666,
-            "recall": 0.5454545454545454,
-            "f1": 0.6,
+            "precision": 0.7692307692307693,
+            "recall": 0.9090909090909091,
+            "f1": 0.8333333333333333,
             "support": 11
           }
         },
         "confusion_matrix": {
           "Technical Issue": {
-            "Other": 3,
-            "Technical Issue": 6,
-            "Inquiry": 1,
+            "Technical Issue": 10,
             "Positive Feedback": 1
           },
           "Inquiry": {
-            "Other": 1,
-            "Inquiry": 1,
-            "Support Experience": 2
+            "Inquiry": 4
           },
           "Product Feedback": {
-            "Other": 4,
-            "Product Feedback": 3,
-            "Technical Issue": 1
+            "Technical Issue": 2,
+            "Product Feedback": 6
           },
           "Support Experience": {
-            "Other": 1,
-            "Support Experience": 1,
-            "Technical Issue": 2,
+            "Support Experience": 3,
+            "Technical Issue": 1,
             "Product Feedback": 1
           },
           "Positive Feedback": {
@@ -531,27 +518,27 @@
         "n": 30
       },
       "product_module": {
-        "accuracy": 0.8333333333333334,
-        "macro_precision": 0.90625,
-        "macro_recall": 0.85,
-        "macro_f1": 0.8432539682539683,
+        "accuracy": 0.9333333333333333,
+        "macro_precision": 0.8333333333333334,
+        "macro_recall": 0.875,
+        "macro_f1": 0.85,
         "per_class": {
           "Authentication": {
             "precision": 1.0,
-            "recall": 0.8,
-            "f1": 0.888888888888889,
+            "recall": 1.0,
+            "f1": 1.0,
             "support": 10
           },
           "Billing": {
-            "precision": 0.75,
+            "precision": 1.0,
             "recall": 1.0,
-            "f1": 0.8571428571428571,
+            "f1": 1.0,
             "support": 3
           },
           "Dashboard": {
-            "precision": 0.5,
+            "precision": 1.0,
             "recall": 1.0,
-            "f1": 0.6666666666666666,
+            "f1": 1.0,
             "support": 4
           },
           "Integrations": {
@@ -561,15 +548,15 @@
             "support": 2
           },
           "Mobile App": {
-            "precision": 1.0,
-            "recall": 1.0,
-            "f1": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
             "support": 2
           },
           "Notifications": {
             "precision": 1.0,
-            "recall": 0.5,
-            "f1": 0.6666666666666666,
+            "recall": 1.0,
+            "f1": 1.0,
             "support": 2
           },
           "Reports": {
@@ -579,21 +566,18 @@
             "support": 3
           },
           "Task Management": {
-            "precision": 1.0,
-            "recall": 0.5,
-            "f1": 0.6666666666666666,
+            "precision": 0.6666666666666666,
+            "recall": 1.0,
+            "f1": 0.8,
             "support": 4
           }
         },
         "confusion_matrix": {
           "Authentication": {
-            "Authentication": 8,
-            "Billing": 1,
-            "Dashboard": 1
+            "Authentication": 10
           },
           "Notifications": {
-            "Notifications": 1,
-            "Dashboard": 1
+            "Notifications": 2
           },
           "Dashboard": {
             "Dashboard": 4
@@ -602,7 +586,7 @@
             "Billing": 3
           },
           "Mobile App": {
-            "Mobile App": 2
+            "Task Management": 2
           },
           "Integrations": {
             "Integrations": 2
@@ -611,17 +595,16 @@
             "Reports": 3
           },
           "Task Management": {
-            "Task Management": 2,
-            "Dashboard": 2
+            "Task Management": 4
           }
         },
         "n": 30
       },
       "sentiment": {
-        "accuracy": 0.26666666666666666,
-        "macro_precision": 0.2833333333333333,
-        "macro_recall": 0.38484848484848483,
-        "macro_f1": 0.2036789297658863,
+        "accuracy": 0.8666666666666667,
+        "macro_precision": 0.5728609625668449,
+        "macro_recall": 0.7272727272727273,
+        "macro_f1": 0.6283143939393939,
         "per_class": {
           "Mixed": {
             "precision": 0.0,
@@ -630,39 +613,36 @@
             "support": 3
           },
           "Negative": {
-            "precision": 0.8,
-            "recall": 0.26666666666666666,
-            "f1": 0.4,
+            "precision": 0.8823529411764706,
+            "recall": 1.0,
+            "f1": 0.9375,
             "support": 15
           },
           "Neutral": {
-            "precision": 0.25,
-            "recall": 0.2727272727272727,
-            "f1": 0.2608695652173913,
+            "precision": 0.9090909090909091,
+            "recall": 0.9090909090909091,
+            "f1": 0.9090909090909091,
             "support": 11
           },
           "Positive": {
-            "precision": 0.08333333333333333,
+            "precision": 0.5,
             "recall": 1.0,
-            "f1": 0.15384615384615385,
+            "f1": 0.6666666666666666,
             "support": 1
           }
         },
         "confusion_matrix": {
           "Negative": {
-            "Neutral": 7,
-            "Negative": 4,
-            "Positive": 3,
-            "Mixed": 1
+            "Negative": 15
           },
           "Neutral": {
-            "Negative": 1,
-            "Neutral": 3,
-            "Positive": 7
+            "Neutral": 10,
+            "Negative": 1
           },
           "Mixed": {
-            "Neutral": 2,
-            "Positive": 1
+            "Negative": 1,
+            "Positive": 1,
+            "Neutral": 1
           },
           "Positive": {
             "Positive": 1
@@ -671,43 +651,42 @@
         "n": 30
       },
       "urgency": {
-        "accuracy": 0.43333333333333335,
-        "macro_precision": 0.3888888888888889,
-        "macro_recall": 0.34523809523809523,
-        "macro_f1": 0.32491582491582494,
+        "accuracy": 0.5666666666666667,
+        "macro_precision": 0.645021645021645,
+        "macro_recall": 0.6190476190476191,
+        "macro_f1": 0.5582137161084529,
         "per_class": {
           "High": {
-            "precision": 0.6666666666666666,
-            "recall": 0.25,
-            "f1": 0.36363636363636365,
+            "precision": 0.5714285714285714,
+            "recall": 1.0,
+            "f1": 0.7272727272727273,
             "support": 8
           },
           "Low": {
-            "precision": 0.5,
-            "recall": 0.7857142857142857,
-            "f1": 0.6111111111111112,
+            "precision": 1.0,
+            "recall": 0.35714285714285715,
+            "f1": 0.5263157894736842,
             "support": 14
           },
           "Medium": {
-            "precision": 0.0,
-            "recall": 0.0,
-            "f1": 0.0,
+            "precision": 0.36363636363636365,
+            "recall": 0.5,
+            "f1": 0.4210526315789474,
             "support": 8
           }
         },
         "confusion_matrix": {
           "High": {
-            "Low": 4,
-            "High": 2,
-            "Medium": 2
+            "High": 8
           },
           "Medium": {
-            "Low": 7,
-            "High": 1
+            "High": 4,
+            "Medium": 4
           },
           "Low": {
-            "Medium": 3,
-            "Low": 11
+            "Low": 5,
+            "Medium": 7,
+            "High": 2
           }
         },
         "n": 30
@@ -722,13 +701,13 @@
       "schema_success_rate": 1.0,
       "failure_count": 0,
       "retry_count": 0,
-      "cache_hit_count": 30,
-      "average_latency_seconds": null,
-      "total_input_tokens": null,
-      "total_output_tokens": null,
-      "average_input_tokens": null,
-      "average_output_tokens": null,
-      "dry_run": true
+      "cache_hit_count": 0,
+      "average_latency_seconds": 1.2500352054333537,
+      "total_input_tokens": 39003,
+      "total_output_tokens": 1359,
+      "average_input_tokens": 1300.1,
+      "average_output_tokens": 45.3,
+      "dry_run": false
     }
   }
 }

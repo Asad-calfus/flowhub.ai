@@ -1,21 +1,27 @@
 """Analysis service - thin wrapper around the existing classification pipeline
 (src/classification/). No classifier logic is duplicated here."""
 
+import logging
+import os
+
 from sqlalchemy.orm import Session
 
 from app.core.exceptions import ClassificationFailedError, ClassificationUnavailableError, NotFoundError
 from app.models.analysis import AnalysisResult
 from app.models.feedback import Feedback
 from app.repositories import analysis as analysis_repo
-from app.schemas.analysis import AnalysisRequest, BatchAnalysisRequest, BatchAnalysisResultItem
+from app.repositories.feedback import list_ids_by_status
+from app.schemas.analysis import AnalysisRequest, BatchAnalysisRequest, BatchAnalysisResultItem, CostEstimateOut
 from app.services.feedback_service import get_feedback
 from src.classification.baseline import classify_baseline
 from src.classification.classifier import FewShotClassifier
 from src.classification.prompt_builder import select_few_shot_examples
+from src.classification.pricing import API_KEY_ENV_VARS, RECOMMENDED_MODEL, estimate_run_cost_usd
 from src.classification.schemas import ClassifierInput
 from src.data_loader import load_non_gold_records
 
 _llm_classifier: FewShotClassifier | None = None
+_logger = logging.getLogger(__name__)
 
 
 def _record_dict(feedback: Feedback) -> dict:
@@ -87,10 +93,8 @@ def get_latest_analysis(db: Session, feedback_id: str):
     return analysis_repo.get_latest(db, feedback_id)
 
 
-def run_batch(db: Session, request: BatchAnalysisRequest) -> list[BatchAnalysisResultItem]:
-    from app.repositories.feedback import list_ids_by_status
-
-    ids = request.feedback_ids or list_ids_by_status(db, "pending")
+def run_batch(db: Session, request: BatchAnalysisRequest, workspace_id: str = "demo") -> list[BatchAnalysisResultItem]:
+    ids = request.feedback_ids or list_ids_by_status(db, "pending", workspace_id)
     results = []
     for feedback_id in ids:
         try:
@@ -105,4 +109,27 @@ def run_batch(db: Session, request: BatchAnalysisRequest) -> list[BatchAnalysisR
             results.append(BatchAnalysisResultItem(feedback_id=feedback_id, status="success"))
         except (ClassificationFailedError, ClassificationUnavailableError, NotFoundError) as exc:
             results.append(BatchAnalysisResultItem(feedback_id=feedback_id, status="failed", error=str(exc)))
+        except Exception as exc:  # noqa: BLE001 - one record's unexpected failure must never take down the batch
+            _logger.exception("Unexpected error classifying %s during batch analysis", feedback_id)
+            results.append(BatchAnalysisResultItem(feedback_id=feedback_id, status="failed", error=str(exc)))
     return results
+
+
+def estimate_batch_cost(db: Session, workspace_id: str = "demo") -> CostEstimateOut:
+    """Pre-flight cost estimate for running live LLM classification over every pending
+    feedback record in the workspace - the whole backlog, not just the gold set. Mirrors
+    the CLI pipeline's (`scripts/pipeline/run_llm.py`) estimate-before-spend pattern, exposed
+    over the API so the dashboard can show it before a user opts into a real API call."""
+    pending_count = len(list_ids_by_status(db, "pending", workspace_id))
+    provider = os.environ.get("LLM_PROVIDER", "anthropic").lower()
+    model = os.environ.get("LLM_MODEL") or RECOMMENDED_MODEL.get(provider, "")
+    api_key_env_var = API_KEY_ENV_VARS.get(provider, "ANTHROPIC_API_KEY")
+    configured = bool(os.environ.get(api_key_env_var))
+    estimated_cost = estimate_run_cost_usd(model, pending_count) if pending_count else 0.0
+    return CostEstimateOut(
+        pending_count=pending_count,
+        provider=provider,
+        model=model,
+        configured=configured,
+        estimated_cost_usd=estimated_cost,
+    )

@@ -6,32 +6,49 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.core.database import get_db
+from app.core.workspace import get_workspace_id
 from app.schemas.common import Page
 from app.schemas.feedback import FeedbackCreate, FeedbackOut, ImportSummary
-from app.schemas.retrieval import ContextMatchSummary, SimilarFeedbackOut
+from app.schemas.retrieval import ContextMatchSummary, RetrievalBatchRequest, RetrievalBatchResponse, SimilarFeedbackOut
 from app.services import feedback_service, retrieval_service
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
 
 
 @router.post("", response_model=FeedbackOut, status_code=status.HTTP_201_CREATED)
-def create_feedback(payload: FeedbackCreate, db: Session = Depends(get_db)) -> FeedbackOut:
-    feedback = feedback_service.create_feedback(db, payload)
+def create_feedback(
+    payload: FeedbackCreate, db: Session = Depends(get_db), workspace_id: str = Depends(get_workspace_id)
+) -> FeedbackOut:
+    feedback = feedback_service.create_feedback(db, payload, workspace_id)
     db.commit()
     return FeedbackOut.model_validate(feedback)
 
 
 @router.post("/import", response_model=ImportSummary)
-async def import_feedback(file: UploadFile, db: Session = Depends(get_db)) -> ImportSummary:
+async def import_feedback(
+    file: UploadFile, db: Session = Depends(get_db), workspace_id: str = Depends(get_workspace_id)
+) -> ImportSummary:
     content = await file.read()
-    summary = feedback_service.import_feedback_csv(db, content)
+    summary = feedback_service.import_feedback_csv(db, content, workspace_id)
     db.commit()
     return summary
+
+
+@router.post("/retrieval/batch", response_model=RetrievalBatchResponse)
+def run_batch_retrieval(
+    payload: RetrievalBatchRequest, db: Session = Depends(get_db), workspace_id: str = Depends(get_workspace_id)
+) -> RetrievalBatchResponse:
+    results = retrieval_service.run_batch(db, payload, workspace_id)
+    db.commit()
+    succeeded = sum(1 for r in results if r.status == "success")
+    failed = sum(1 for r in results if r.status == "failed")
+    return RetrievalBatchResponse(requested=len(results), succeeded=succeeded, failed=failed, results=results)
 
 
 @router.get("", response_model=Page[FeedbackOut])
 def list_feedback(
     db: Session = Depends(get_db),
+    workspace_id: str = Depends(get_workspace_id),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=settings.DEFAULT_PAGE_SIZE, ge=1, le=settings.MAX_PAGE_SIZE),
     source: Optional[str] = None,
@@ -45,6 +62,7 @@ def list_feedback(
 ) -> Page[FeedbackOut]:
     items, total = feedback_service.list_feedback(
         db,
+        workspace_id=workspace_id,
         page=page,
         page_size=page_size,
         source=source,

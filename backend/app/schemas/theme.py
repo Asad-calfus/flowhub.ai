@@ -29,3 +29,9 @@ class ThemeDetailOut(ThemeOut):
     sentiment_distribution: dict[str, float]
     representative_feedback: list[dict]
     members: list[ThemeMemberOut]
+
+
+class RecomputeThemesResponse(BaseModel):
+    themes_created: int
+    feedback_assigned: int
+    feedback_unclustered: int

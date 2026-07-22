@@ -3,20 +3,31 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.core.exceptions import NotFoundError
+from app.core.workspace import get_workspace_id
 from app.schemas.analysis import (
     AnalysisOut,
     AnalysisRequest,
     BatchAnalysisRequest,
     BatchAnalysisResponse,
+    CostEstimateOut,
 )
 from app.services import analysis_service
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
 
+@router.get("/estimate", response_model=CostEstimateOut)
+def estimate_batch_cost(
+    db: Session = Depends(get_db), workspace_id: str = Depends(get_workspace_id)
+) -> CostEstimateOut:
+    return analysis_service.estimate_batch_cost(db, workspace_id)
+
+
 @router.post("/batch", response_model=BatchAnalysisResponse)
-def run_batch_analysis(payload: BatchAnalysisRequest, db: Session = Depends(get_db)) -> BatchAnalysisResponse:
-    results = analysis_service.run_batch(db, payload)
+def run_batch_analysis(
+    payload: BatchAnalysisRequest, db: Session = Depends(get_db), workspace_id: str = Depends(get_workspace_id)
+) -> BatchAnalysisResponse:
+    results = analysis_service.run_batch(db, payload, workspace_id)
     db.commit()
     succeeded = sum(1 for r in results if r.status == "success")
     failed = sum(1 for r in results if r.status == "failed")

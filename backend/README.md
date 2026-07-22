@@ -10,19 +10,25 @@ Python AI/data pipeline. See root `../README.md` for the project overview and
 data/                   # dataset (raw/processed/evaluation/context) - see data/README.md
 results/                # predictions, metrics, error analysis (generated, not hand-written)
 ├── retrieval/          # Phase 3 outputs (+ cache/, gitignored)
-└── themes/             # Phase 4 outputs
+├── themes/             # Phase 4 outputs
+└── reports/            # Phase 6 outputs
 scripts/
 ├── data/               # generate/validate the dataset
-└── pipeline/           # classification + retrieval + theme runners
+└── pipeline/           # classification + retrieval + theme + report runners
 src/
 ├── data_loader.py       # shared CSV loading helpers
 ├── classification/      # schemas, prompt builder, baseline, LLM classifier, evaluator, pricing
 ├── retrieval/           # schemas, text_builder, embedder, similarity, context_retriever, evaluator
-└── themes/              # clustering, keywords, representatives, naming, trends, evaluator
+├── themes/              # clustering, keywords, representatives, naming, trends, evaluator
+└── reports/             # aggregator, evidence_builder, prompt_builder, generator, evaluator
+app/                     # FastAPI application (Phase 5) - api/, core/, models/, repositories/,
+                         # schemas/, services/ - see "Phase 5" section below
 tests/
 ├── classification/      # mirrors src/classification/
 ├── retrieval/           # mirrors src/retrieval/
-└── themes/              # mirrors src/themes/
+├── themes/              # mirrors src/themes/
+├── reports/              # mirrors src/reports/ (DB-backed, reuses tests/api's test database)
+└── api/                 # FastAPI endpoint tests (isolated flowhub_test database)
 ```
 
 Dataset/taxonomy/pipeline design docs live in root `../docs/`.
@@ -208,6 +214,7 @@ uvicorn app.main:app --reload --port 8001
 | `context_matches` | One row per feedback↔context candidate pairing, `match_status` matched/candidate |
 | `themes` | One row per cluster: name, keywords, size, first/last seen, trend status |
 | `theme_members` | feedback↔theme membership; `membership_score` also identifies representatives (top-3) |
+| `reports` | One row per generated weekly report (Phase 6, history, not overwritten) - period, filters, evidence/report JSON, markdown |
 
 ### API endpoints (`/api/v1`, see `app/api/routes/`)
 
@@ -230,6 +237,10 @@ POST   /api/v1/analysis/batch                         {"feedback_ids": [...] | o
 GET    /api/v1/themes
 GET    /api/v1/themes/{id}                            + sentiment distribution, representative feedback, members
 GET    /api/v1/themes/{id}/feedback
+
+POST   /api/v1/reports/weekly                         {"start_date", "end_date", "mode": "deterministic"|"dry_run"|"live", ...}
+GET    /api/v1/reports                                paginated report summaries
+GET    /api/v1/reports/{id}                           full report (structured JSON + markdown)
 ```
 
 List filters: `source`, `sentiment`, `category`, `product_module`, `customer_tier`,
@@ -266,7 +277,7 @@ run.
 ### Tests
 
 ```bash
-python3 -m pytest -q                # full suite (131 tests: 98 pipeline + 33 API)
+python3 -m pytest -q                # full suite (182 tests: 98 pipeline + 33 API + 51 reports)
 python3 -m pytest tests/api -q       # API tests only
 ```
 
@@ -289,6 +300,101 @@ docker compose up -d db       # Postgres only, if running the API locally instea
 
 ### Not yet implemented
 
-Weekly LLM summaries, frontend, Celery/Redis, authentication, and multi-tenancy are out of
-scope for Phase 5 (see `docs/project_plan.md`). Also deferred: advanced/full-text search on
-feedback, async/background batch analysis (synchronous for now, per spec), and CI.
+Frontend, Celery/Redis, authentication, and multi-tenancy are out of scope for Phase 5 (see
+`docs/project_plan.md`). Also deferred: advanced/full-text search on feedback,
+async/background batch analysis (synchronous for now, per spec), and CI.
+
+## Phase 6 — Weekly insight report generation
+
+Turns Phases 1-5's stored data into a weekly report (`src/reports/`), exposed over the API
+and persisted in a new `reports` table. No count/percentage/trend is ever calculated by an
+LLM - see `PROJECT_CONTEXT.md`'s Phase 6 section and `docs/changelog/0011-*.md` for the full
+design rationale.
+
+### Report generation flow
+
+```
+aggregate_period (SQL + Python, src/reports/aggregator.py)
+    -> build_evidence_pack (size-bounded sampling, src/reports/evidence_builder.py)
+        -> generate_deterministic_report   (templates, no LLM)
+           OR
+           LLMReportGenerator.generate     (dry-run stub / real API call, one retry,
+                                             disk cache, ID-reference validation)
+    -> assemble_report (merges narrative TEXT + evidence pack NUMBERS -> WeeklyReport)
+    -> render_markdown -> persisted to `reports` table (evidence_json + report_json + markdown)
+```
+
+### Deterministic vs. LLM mode
+
+- `deterministic` (API/CLI default): template-based prose from the evidence pack, no API
+  key needed, no cost. Also the evaluation baseline.
+- `dry_run`: exercises the full LLM code path (prompt build, JSON parse, Pydantic
+  validation, ID-reference check) using a local deterministic stub instead of a real call -
+  same idea as the Phase 2 classifier's dry-run mode.
+- `live`: a real API call. Returns `503` immediately if no provider key is configured;
+  the CLI script prints a rough cost estimate and asks for confirmation first.
+
+### Evidence-building rules
+
+Top 8 themes, top 5 context items (known bugs/feature requests/releases) per section, 2-3
+representative feedback previews per insight (`MAX_THEMES`/`MAX_CONTEXT_PER_SECTION`/
+`MAX_REPRESENTATIVES` in `src/reports/schemas.py`). No raw feedback beyond the sampled
+representatives is ever included in a prompt.
+
+### Evaluation method
+
+Deterministic checks only (`src/reports/evaluator.py`, no LLM judge): metric correctness,
+evidence traceability, unsupported-claim count, theme/important-issue coverage,
+recommendation support rate, schema success rate. Human-scored fields (correctness, clarity,
+usefulness, evidence quality, actionability - 1-5) are left as `None` placeholders for a
+person to fill in against `backend/results/reports/weekly_report.md`.
+
+### Commands
+
+```bash
+# Deterministic report (no LLM, no cost)
+python3 scripts/pipeline/generate_weekly_report.py --start 2026-05-04 --end 2026-05-10
+
+# Dry-run LLM path (exercises the full LLM code path, no API calls)
+python3 scripts/pipeline/generate_weekly_report.py --start 2026-05-04 --end 2026-05-10 --mode dry-run
+
+# Live LLM report (real API call; prints a cost estimate and asks for confirmation first)
+python3 scripts/pipeline/generate_weekly_report.py --start 2026-05-04 --end 2026-05-10 --mode live
+
+# Optional filters
+python3 scripts/pipeline/generate_weekly_report.py --start ... --end ... --module Dashboard --tier Enterprise
+
+# Evaluate the most recent (or a specific) report
+python3 scripts/pipeline/evaluate_weekly_report.py
+python3 scripts/pipeline/evaluate_weekly_report.py --report-id RPT-0004
+
+# Tests
+python3 -m pytest tests/reports tests/api/test_reports.py -q   # report tests only
+python3 -m pytest -q                                            # full suite
+```
+
+### API endpoints
+
+```
+POST /api/v1/reports/weekly   {"start_date": "2026-05-04", "end_date": "2026-05-10",
+                                "mode": "deterministic"|"dry_run"|"live",
+                                "product_module": str | null, "customer_tier": str | null,
+                                "force": bool}
+GET  /api/v1/reports                       paginated report summaries
+GET  /api/v1/reports/{id}                  full report (structured JSON + markdown)
+```
+
+### Current limitations
+
+Only the 30 gold-set feedback records have stored `analysis_results`/`context_matches` in
+this database (Phase 5's baseline/context-matching were only ever run against the gold
+set), so most periods will show most feedback as "not yet classified/retrieval-processed" in
+the Data Limitations section rather than contributing to counts - this is a demo-dataset
+gap, not a report-logic bug. Also: the evidence pack's `MAX_THEMES=8` cap silently drops
+themes past the top 8 in a busy period; "new" themes currently appear in both "Top Pain
+Points" and "Growing Themes." Full list: `backend/results/reports/report_error_analysis.md`.
+
+### Deferred (Phase 7+)
+
+Frontend, Celery/Redis, authentication, and scheduled/automatic report generation - see
+`docs/project_plan.md`.

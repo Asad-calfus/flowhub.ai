@@ -12,6 +12,7 @@ class Feedback(Base):
     __tablename__ = "feedback"
 
     id: Mapped[str] = mapped_column(String(20), primary_key=True)  # e.g. "FB-0001"
+    workspace_id: Mapped[str] = mapped_column(String(50), nullable=False, server_default="demo", index=True)
     feedback_text: Mapped[str] = mapped_column(String, nullable=False)
     source: Mapped[str | None] = mapped_column(String(50))
     feedback_created_at: Mapped[datetime | None] = mapped_column(DateTime)

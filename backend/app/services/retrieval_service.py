@@ -2,18 +2,29 @@
 context_retriever thresholds) against embeddings/context records persisted in Postgres
 via pgvector, instead of the local numpy-cache files used by the standalone pipeline."""
 
+import logging
+
 import numpy as np
 from sqlalchemy.orm import Session
 
+from app.core.exceptions import NotFoundError
 from app.models.context import ContextMatch
 from app.repositories import context as context_repo
 from app.repositories import embedding as embedding_repo
 from app.repositories import feedback as feedback_repo
-from app.schemas.retrieval import ContextMatchOut, ContextMatchSummary, SimilarFeedbackOut
+from app.schemas.retrieval import (
+    ContextMatchOut,
+    ContextMatchSummary,
+    RetrievalBatchRequest,
+    RetrievalBatchResultItem,
+    SimilarFeedbackOut,
+)
 from app.services.embedding_service import ensure_embedding
 from app.services.feedback_service import get_feedback
 from src.retrieval.context_retriever import LOW_SIGNAL_THRESHOLD, MATCH_THRESHOLD
 from src.retrieval.similarity import cosine_top_k
+
+_logger = logging.getLogger(__name__)
 
 
 def get_similar_feedback(db: Session, feedback_id: str, top_k: int) -> list[SimilarFeedbackOut]:
@@ -107,3 +118,24 @@ def get_context_matches(db: Session, feedback_id: str, top_k: int) -> ContextMat
     return ContextMatchSummary(
         feedback_id=feedback_id, status=status, matched_context_id=matched_context_id, candidates=candidates_out
     )
+
+
+def run_batch(db: Session, request: RetrievalBatchRequest, workspace_id: str = "demo") -> list[RetrievalBatchResultItem]:
+    """Runs context-matching for a batch of feedback, defaulting to every record in the
+    workspace that has no context-match rows yet - the backlog that otherwise only gets
+    processed one record at a time when someone happens to open its detail page (the gap
+    that shows up as the weekly report's "not run through context-match retrieval yet"
+    data limitation)."""
+    ids = request.feedback_ids or context_repo.list_feedback_ids_without_matches(db, workspace_id)
+    results = []
+    for feedback_id in ids:
+        try:
+            with db.begin_nested():
+                get_context_matches(db, feedback_id, request.top_k)
+            results.append(RetrievalBatchResultItem(feedback_id=feedback_id, status="success"))
+        except NotFoundError as exc:
+            results.append(RetrievalBatchResultItem(feedback_id=feedback_id, status="failed", error=str(exc)))
+        except Exception as exc:  # noqa: BLE001 - one record's failure must never break the batch
+            _logger.exception("Unexpected error running context-matching for %s during batch retrieval", feedback_id)
+            results.append(RetrievalBatchResultItem(feedback_id=feedback_id, status="failed", error=str(exc)))
+    return results

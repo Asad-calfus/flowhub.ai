@@ -22,6 +22,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 DEFAULT_CACHE_PATH = os.path.join(REPO_ROOT, "results", "cache", "llm_cache.json")
 
 MAX_ATTEMPTS = 2  # one initial call + one retry
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"  # Groq's chat completions API is OpenAI-compatible
 
 _run_logger = logging.getLogger("classification.runs")
 
@@ -87,7 +88,7 @@ class FewShotClassifier:
         self.cache = self._load_cache()
 
     def _api_key_env_var(self) -> str:
-        return "OPENAI_API_KEY" if self.provider == "openai" else "ANTHROPIC_API_KEY"
+        return {"openai": "OPENAI_API_KEY", "groq": "GROQ_API_KEY"}.get(self.provider, "ANTHROPIC_API_KEY")
 
     # -- cache -------------------------------------------------------------
 
@@ -118,7 +119,7 @@ class FewShotClassifier:
             latency = time.perf_counter() - start
             return raw, {"input_tokens": 0, "output_tokens": 0}, latency
 
-        if self.provider == "openai":
+        if self.provider in ("openai", "groq"):
             return self._call_openai(system_prompt, user_prompt, start)
         return self._call_anthropic(system_prompt, user_prompt, start)
 
@@ -146,7 +147,8 @@ class FewShotClassifier:
         if self._client is None:
             import openai
 
-            self._client = openai.OpenAI(api_key=self.api_key, timeout=self.timeout)
+            base_url = GROQ_BASE_URL if self.provider == "groq" else None
+            self._client = openai.OpenAI(api_key=self.api_key, timeout=self.timeout, base_url=base_url)
 
         # JSON mode cuts down on invalid-JSON retries (each retry doubles token spend),
         # which matters more for a paid key than for Anthropic's free-tier-friendly dry runs.

@@ -10,6 +10,7 @@ class Theme(Base):
     __tablename__ = "themes"
 
     id: Mapped[str] = mapped_column(String(20), primary_key=True)  # e.g. "THM-001"
+    workspace_id: Mapped[str] = mapped_column(String(50), nullable=False, server_default="demo", index=True)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
     keywords: Mapped[list | None] = mapped_column(JSON)
     feedback_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)

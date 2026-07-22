@@ -1,0 +1,1668 @@
+{
+  "clustering_config": {
+    "method": "AgglomerativeClustering (cosine distance, average linkage)",
+    "distance_threshold": 0.55,
+    "min_theme_size": 4,
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+  },
+  "n_total_records": 150,
+  "n_themes": 16,
+  "n_assigned": 84,
+  "n_unclustered": 66,
+  "themes": [
+    {
+      "theme_id": "THM-001",
+      "name": "Authentication logged update constantly times",
+      "size": 8,
+      "keywords": [
+        "logged",
+        "update",
+        "constantly",
+        "times day",
+        "wasn",
+        "day",
+        "times",
+        "mobile"
+      ],
+      "representative_feedback_ids": [
+        "FB-0004",
+        "FB-0010",
+        "FB-0001"
+      ],
+      "dominant_product_module": "Authentication",
+      "sentiment_distribution": {
+        "Negative": 0.75,
+        "Neutral": 0.125,
+        "Mixed": 0.125
+      },
+      "product_module_distribution": {
+        "Authentication": 0.625,
+        "Mobile App": 0.375
+      },
+      "first_seen": "2026-05-09",
+      "last_seen": "2026-06-24",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-001",
+          "week_start": "2026-05-04",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Authentication": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-001",
+          "week_start": "2026-05-11",
+          "feedback_count": 4,
+          "change_from_previous_week": 3,
+          "percent_change": 300.0,
+          "sentiment_distribution": {
+            "Negative": 0.75,
+            "Neutral": 0.25
+          },
+          "customer_tier_distribution": {
+            "Pro": 0.5,
+            "Free": 0.5
+          },
+          "product_module_distribution": {
+            "Authentication": 0.5,
+            "Mobile App": 0.5
+          },
+          "trend_status": "growing"
+        },
+        {
+          "theme_id": "THM-001",
+          "week_start": "2026-05-18",
+          "feedback_count": 2,
+          "change_from_previous_week": -2,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Negative": 0.5,
+            "Mixed": 0.5
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Authentication": 1.0
+          },
+          "trend_status": "declining"
+        },
+        {
+          "theme_id": "THM-001",
+          "week_start": "2026-06-22",
+          "feedback_count": 1,
+          "change_from_previous_week": -1,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Mobile App": 1.0
+          },
+          "trend_status": "declining"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-002",
+      "name": "Dashboard load slow seconds",
+      "size": 8,
+      "keywords": [
+        "dashboard",
+        "load",
+        "slow",
+        "seconds",
+        "dashboard slow",
+        "slow today",
+        "widgets",
+        "page"
+      ],
+      "representative_feedback_ids": [
+        "FB-0021",
+        "FB-0020",
+        "FB-0023"
+      ],
+      "dominant_product_module": "Dashboard",
+      "sentiment_distribution": {
+        "Negative": 0.75,
+        "Neutral": 0.25
+      },
+      "product_module_distribution": {
+        "Dashboard": 1.0
+      },
+      "first_seen": "2026-03-12",
+      "last_seen": "2026-06-16",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-002",
+          "week_start": "2026-03-09",
+          "feedback_count": 2,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 0.5,
+            "Neutral": 0.5
+          },
+          "customer_tier_distribution": {
+            "Pro": 0.5,
+            "Enterprise": 0.5
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-002",
+          "week_start": "2026-03-16",
+          "feedback_count": 2,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Free": 0.5,
+            "Enterprise": 0.5
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-002",
+          "week_start": "2026-03-23",
+          "feedback_count": 2,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 0.5,
+            "Negative": 0.5
+          },
+          "customer_tier_distribution": {
+            "Pro": 0.5,
+            "Free": 0.5
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-002",
+          "week_start": "2026-03-30",
+          "feedback_count": 1,
+          "change_from_previous_week": -1,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "declining"
+        },
+        {
+          "theme_id": "THM-002",
+          "week_start": "2026-06-15",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-003",
+      "name": "Dashboard dark mode theme eyes",
+      "size": 7,
+      "keywords": [
+        "dark",
+        "dark mode",
+        "mode",
+        "theme",
+        "eyes",
+        "mode eyes",
+        "eyes dying",
+        "white"
+      ],
+      "representative_feedback_ids": [
+        "FB-0048",
+        "FB-0047",
+        "FB-0052"
+      ],
+      "dominant_product_module": "Dashboard",
+      "sentiment_distribution": {
+        "Neutral": 0.5714,
+        "Negative": 0.1429,
+        "Positive": 0.2857
+      },
+      "product_module_distribution": {
+        "Dashboard": 1.0
+      },
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-05-04",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-003",
+          "week_start": "2026-04-06",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-003",
+          "week_start": "2026-04-13",
+          "feedback_count": 2,
+          "change_from_previous_week": 1,
+          "percent_change": 100.0,
+          "sentiment_distribution": {
+            "Negative": 0.5,
+            "Positive": 0.5
+          },
+          "customer_tier_distribution": {
+            "Free": 0.5,
+            "Pro": 0.5
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "growing"
+        },
+        {
+          "theme_id": "THM-003",
+          "week_start": "2026-04-20",
+          "feedback_count": 2,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Free": 0.5,
+            "Pro": 0.5
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-003",
+          "week_start": "2026-04-27",
+          "feedback_count": 1,
+          "change_from_previous_week": -1,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Positive": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "declining"
+        },
+        {
+          "theme_id": "THM-003",
+          "week_start": "2026-05-04",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-004",
+      "name": "Billing enterprise pro price limit",
+      "size": 6,
+      "keywords": [
+        "enterprise",
+        "pro",
+        "price",
+        "limit",
+        "rate",
+        "plans",
+        "enterprise plans",
+        "month"
+      ],
+      "representative_feedback_ids": [
+        "FB-0037",
+        "FB-0129",
+        "FB-0032"
+      ],
+      "dominant_product_module": "Billing",
+      "sentiment_distribution": {
+        "Negative": 0.6667,
+        "Neutral": 0.3333
+      },
+      "product_module_distribution": {
+        "Dashboard": 0.1667,
+        "Billing": 0.6667,
+        "Integrations": 0.1667
+      },
+      "first_seen": "2026-03-02",
+      "last_seen": "2026-05-05",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-004",
+          "week_start": "2026-03-02",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Billing": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-004",
+          "week_start": "2026-03-09",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Billing": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-004",
+          "week_start": "2026-03-23",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Free": 1.0
+          },
+          "product_module_distribution": {
+            "Billing": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-004",
+          "week_start": "2026-04-06",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-004",
+          "week_start": "2026-04-20",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Integrations": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-004",
+          "week_start": "2026-05-04",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Billing": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-005",
+      "name": "Reports report export csv count",
+      "size": 6,
+      "keywords": [
+        "report",
+        "export",
+        "csv",
+        "count",
+        "rows",
+        "1000",
+        "different",
+        "took longer"
+      ],
+      "representative_feedback_ids": [
+        "FB-0064",
+        "FB-0068",
+        "FB-0065"
+      ],
+      "dominant_product_module": "Reports",
+      "sentiment_distribution": {
+        "Negative": 0.6667,
+        "Neutral": 0.3333
+      },
+      "product_module_distribution": {
+        "Reports": 1.0
+      },
+      "first_seen": "2026-01-28",
+      "last_seen": "2026-04-06",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-005",
+          "week_start": "2026-01-26",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Reports": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-005",
+          "week_start": "2026-02-02",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Reports": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-005",
+          "week_start": "2026-02-23",
+          "feedback_count": 2,
+          "change_from_previous_week": 1,
+          "percent_change": 100.0,
+          "sentiment_distribution": {
+            "Neutral": 0.5,
+            "Negative": 0.5
+          },
+          "customer_tier_distribution": {
+            "Pro": 0.5,
+            "Enterprise": 0.5
+          },
+          "product_module_distribution": {
+            "Reports": 1.0
+          },
+          "trend_status": "growing"
+        },
+        {
+          "theme_id": "THM-005",
+          "week_start": "2026-03-09",
+          "feedback_count": 1,
+          "change_from_previous_week": -1,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Reports": 1.0
+          },
+          "trend_status": "declining"
+        },
+        {
+          "theme_id": "THM-005",
+          "week_start": "2026-04-06",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Reports": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-006",
+      "name": "Authentication email password reset support",
+      "size": 5,
+      "keywords": [
+        "email",
+        "password",
+        "reset",
+        "password reset",
+        "support",
+        "number",
+        "number email",
+        "support number"
+      ],
+      "representative_feedback_ids": [
+        "FB-0140",
+        "FB-0008",
+        "FB-0007"
+      ],
+      "dominant_product_module": "Authentication",
+      "sentiment_distribution": {
+        "Negative": 0.4,
+        "Mixed": 0.2,
+        "Neutral": 0.2,
+        "Positive": 0.2
+      },
+      "product_module_distribution": {
+        "Authentication": 1.0
+      },
+      "first_seen": "2026-02-06",
+      "last_seen": "2026-06-23",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-006",
+          "week_start": "2026-02-02",
+          "feedback_count": 2,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Free": 0.5,
+            "Enterprise": 0.5
+          },
+          "product_module_distribution": {
+            "Authentication": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-006",
+          "week_start": "2026-02-09",
+          "feedback_count": 2,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Mixed": 0.5,
+            "Positive": 0.5
+          },
+          "customer_tier_distribution": {
+            "Pro": 0.5,
+            "Free": 0.5
+          },
+          "product_module_distribution": {
+            "Authentication": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-006",
+          "week_start": "2026-06-22",
+          "feedback_count": 1,
+          "change_from_previous_week": -1,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Free": 1.0
+          },
+          "product_module_distribution": {
+            "Authentication": 1.0
+          },
+          "trend_status": "declining"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-007",
+      "name": "Task Management person time notifications task",
+      "size": 5,
+      "keywords": [
+        "person",
+        "time",
+        "notifications",
+        "task",
+        "deadline practically",
+        "showing hour",
+        "time deadline",
+        "assignment notifications"
+      ],
+      "representative_feedback_ids": [
+        "FB-0011",
+        "FB-0075",
+        "FB-0070"
+      ],
+      "dominant_product_module": "Task Management",
+      "sentiment_distribution": {
+        "Negative": 1.0
+      },
+      "product_module_distribution": {
+        "Notifications": 0.4,
+        "Task Management": 0.6
+      },
+      "first_seen": "2026-03-04",
+      "last_seen": "2026-06-02",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-007",
+          "week_start": "2026-03-02",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-007",
+          "week_start": "2026-03-16",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-007",
+          "week_start": "2026-04-06",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Notifications": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-007",
+          "week_start": "2026-04-27",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Notifications": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-007",
+          "week_start": "2026-06-01",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-008",
+      "name": "Notifications instant push delayed",
+      "size": 5,
+      "keywords": [
+        "notifications",
+        "instant",
+        "push",
+        "push notifications",
+        "delayed",
+        "fine",
+        "hours",
+        "anymore"
+      ],
+      "representative_feedback_ids": [
+        "FB-0012",
+        "FB-0016",
+        "FB-0014"
+      ],
+      "dominant_product_module": "Notifications",
+      "sentiment_distribution": {
+        "Negative": 0.4,
+        "Mixed": 0.2,
+        "Neutral": 0.4
+      },
+      "product_module_distribution": {
+        "Notifications": 1.0
+      },
+      "first_seen": "2026-04-15",
+      "last_seen": "2026-05-01",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-008",
+          "week_start": "2026-04-13",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Free": 1.0
+          },
+          "product_module_distribution": {
+            "Notifications": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-008",
+          "week_start": "2026-04-20",
+          "feedback_count": 2,
+          "change_from_previous_week": 1,
+          "percent_change": 100.0,
+          "sentiment_distribution": {
+            "Mixed": 0.5,
+            "Neutral": 0.5
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Notifications": 1.0
+          },
+          "trend_status": "growing"
+        },
+        {
+          "theme_id": "THM-008",
+          "week_start": "2026-04-27",
+          "feedback_count": 2,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 0.5,
+            "Neutral": 0.5
+          },
+          "customer_tier_distribution": {
+            "Free": 0.5,
+            "Pro": 0.5
+          },
+          "product_module_distribution": {
+            "Notifications": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-009",
+      "name": "Invoice tax month billing",
+      "size": 5,
+      "keywords": [
+        "invoice",
+        "tax",
+        "month",
+        "billing",
+        "says",
+        "page",
+        "actual",
+        "showed preview"
+      ],
+      "representative_feedback_ids": [
+        "FB-0034",
+        "FB-0031",
+        "FB-0033"
+      ],
+      "dominant_product_module": "Billing",
+      "sentiment_distribution": {
+        "Negative": 0.4,
+        "Neutral": 0.6
+      },
+      "product_module_distribution": {
+        "Billing": 1.0
+      },
+      "first_seen": "2026-03-05",
+      "last_seen": "2026-06-30",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-009",
+          "week_start": "2026-03-02",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Free": 1.0
+          },
+          "product_module_distribution": {
+            "Billing": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-009",
+          "week_start": "2026-04-27",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Billing": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-009",
+          "week_start": "2026-06-22",
+          "feedback_count": 2,
+          "change_from_previous_week": 1,
+          "percent_change": 100.0,
+          "sentiment_distribution": {
+            "Negative": 0.5,
+            "Neutral": 0.5
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Billing": 1.0
+          },
+          "trend_status": "growing"
+        },
+        {
+          "theme_id": "THM-009",
+          "week_start": "2026-06-29",
+          "feedback_count": 1,
+          "change_from_previous_week": -1,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Billing": 1.0
+          },
+          "trend_status": "declining"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-010",
+      "name": "Mobile App opening android attachments crashes",
+      "size": 5,
+      "keywords": [
+        "opening",
+        "android",
+        "attachments",
+        "crashes",
+        "closes",
+        "try",
+        "force",
+        "task"
+      ],
+      "representative_feedback_ids": [
+        "FB-0044",
+        "FB-0038",
+        "FB-0039"
+      ],
+      "dominant_product_module": "Mobile App",
+      "sentiment_distribution": {
+        "Negative": 1.0
+      },
+      "product_module_distribution": {
+        "Mobile App": 1.0
+      },
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-22",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-010",
+          "week_start": "2026-06-08",
+          "feedback_count": 2,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Mobile App": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-010",
+          "week_start": "2026-06-15",
+          "feedback_count": 2,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 0.5,
+            "Free": 0.5
+          },
+          "product_module_distribution": {
+            "Mobile App": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-010",
+          "week_start": "2026-06-22",
+          "feedback_count": 1,
+          "change_from_previous_week": -1,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Mobile App": 1.0
+          },
+          "trend_status": "declining"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-011",
+      "name": "Authentication sso okta session login",
+      "size": 4,
+      "keywords": [
+        "sso",
+        "okta",
+        "okta sso",
+        "session",
+        "sso login",
+        "login",
+        "work today",
+        "dying right"
+      ],
+      "representative_feedback_ids": [
+        "FB-0139",
+        "FB-0002",
+        "FB-0097"
+      ],
+      "dominant_product_module": "Authentication",
+      "sentiment_distribution": {
+        "Negative": 0.5,
+        "Neutral": 0.25,
+        "Positive": 0.25
+      },
+      "product_module_distribution": {
+        "Authentication": 1.0
+      },
+      "first_seen": "2026-05-06",
+      "last_seen": "2026-05-12",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-011",
+          "week_start": "2026-05-04",
+          "feedback_count": 3,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 0.3333,
+            "Neutral": 0.3333,
+            "Positive": 0.3333
+          },
+          "customer_tier_distribution": {
+            "Free": 0.3333,
+            "Enterprise": 0.6667
+          },
+          "product_module_distribution": {
+            "Authentication": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-011",
+          "week_start": "2026-05-11",
+          "feedback_count": 1,
+          "change_from_previous_week": -2,
+          "percent_change": -66.67,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Enterprise": 1.0
+          },
+          "product_module_distribution": {
+            "Authentication": 1.0
+          },
+          "trend_status": "declining"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-012",
+      "name": "Integrations slack channel task integration",
+      "size": 4,
+      "keywords": [
+        "slack",
+        "channel",
+        "task",
+        "integration",
+        "days",
+        "task notification",
+        "notification days",
+        "slack channel"
+      ],
+      "representative_feedback_ids": [
+        "FB-0056",
+        "FB-0061",
+        "FB-0055"
+      ],
+      "dominant_product_module": "Integrations",
+      "sentiment_distribution": {
+        "Negative": 0.5,
+        "Neutral": 0.5
+      },
+      "product_module_distribution": {
+        "Integrations": 1.0
+      },
+      "first_seen": "2026-03-30",
+      "last_seen": "2026-04-21",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-012",
+          "week_start": "2026-03-30",
+          "feedback_count": 2,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Integrations": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-012",
+          "week_start": "2026-04-06",
+          "feedback_count": 1,
+          "change_from_previous_week": -1,
+          "percent_change": -50.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Integrations": 1.0
+          },
+          "trend_status": "declining"
+        },
+        {
+          "theme_id": "THM-012",
+          "week_start": "2026-04-20",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Integrations": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-013",
+      "name": "Task Management task list subtasks reset",
+      "size": 4,
+      "keywords": [
+        "task",
+        "task list",
+        "subtasks",
+        "list",
+        "reset",
+        "use filters",
+        "reset time",
+        "time navigate"
+      ],
+      "representative_feedback_ids": [
+        "FB-0126",
+        "FB-0112",
+        "FB-0077"
+      ],
+      "dominant_product_module": "Task Management",
+      "sentiment_distribution": {
+        "Negative": 1.0
+      },
+      "product_module_distribution": {
+        "Task Management": 1.0
+      },
+      "first_seen": "2026-02-20",
+      "last_seen": "2026-05-29",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-013",
+          "week_start": "2026-02-16",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-013",
+          "week_start": "2026-03-30",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-013",
+          "week_start": "2026-04-13",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-013",
+          "week_start": "2026-05-25",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-014",
+      "name": "Dashboard searching search project filter",
+      "size": 4,
+      "keywords": [
+        "searching",
+        "search",
+        "project",
+        "filter",
+        "results",
+        "vs searching",
+        "vs",
+        "workspace noticeably"
+      ],
+      "representative_feedback_ids": [
+        "FB-0076",
+        "FB-0109",
+        "FB-0123"
+      ],
+      "dominant_product_module": "Dashboard",
+      "sentiment_distribution": {
+        "Negative": 0.5,
+        "Neutral": 0.5
+      },
+      "product_module_distribution": {
+        "Dashboard": 1.0
+      },
+      "first_seen": "2026-03-09",
+      "last_seen": "2026-05-18",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-014",
+          "week_start": "2026-03-09",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-014",
+          "week_start": "2026-03-16",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-014",
+          "week_start": "2026-04-06",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-014",
+          "week_start": "2026-05-18",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-015",
+      "name": "Task Management templates save task recurring",
+      "size": 4,
+      "keywords": [
+        "templates save",
+        "task templates",
+        "templates",
+        "recurring",
+        "task",
+        "sprint",
+        "save",
+        "weekly"
+      ],
+      "representative_feedback_ids": [
+        "FB-0088",
+        "FB-0145",
+        "FB-0141"
+      ],
+      "dominant_product_module": "Task Management",
+      "sentiment_distribution": {
+        "Negative": 0.25,
+        "Neutral": 0.25,
+        "Positive": 0.5
+      },
+      "product_module_distribution": {
+        "Task Management": 1.0
+      },
+      "first_seen": "2026-04-16",
+      "last_seen": "2026-06-14",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-015",
+          "week_start": "2026-04-13",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-015",
+          "week_start": "2026-05-04",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Positive": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-015",
+          "week_start": "2026-05-25",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Positive": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-015",
+          "week_start": "2026-06-08",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Negative": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    },
+    {
+      "theme_id": "THM-016",
+      "name": "Task Management tasks tracking built time",
+      "size": 4,
+      "keywords": [
+        "tasks",
+        "tracking",
+        "built time",
+        "tracking task",
+        "task needing",
+        "tool bolted",
+        "separate tool",
+        "time tracking"
+      ],
+      "representative_feedback_ids": [
+        "FB-0104",
+        "FB-0084",
+        "FB-0094"
+      ],
+      "dominant_product_module": "Task Management",
+      "sentiment_distribution": {
+        "Neutral": 1.0
+      },
+      "product_module_distribution": {
+        "Task Management": 0.75,
+        "Dashboard": 0.25
+      },
+      "first_seen": "2026-02-15",
+      "last_seen": "2026-06-26",
+      "weekly_trends": [
+        {
+          "theme_id": "THM-016",
+          "week_start": "2026-02-09",
+          "feedback_count": 1,
+          "change_from_previous_week": null,
+          "percent_change": null,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "new"
+        },
+        {
+          "theme_id": "THM-016",
+          "week_start": "2026-03-23",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Dashboard": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-016",
+          "week_start": "2026-05-04",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        },
+        {
+          "theme_id": "THM-016",
+          "week_start": "2026-06-22",
+          "feedback_count": 1,
+          "change_from_previous_week": 0,
+          "percent_change": 0.0,
+          "sentiment_distribution": {
+            "Neutral": 1.0
+          },
+          "customer_tier_distribution": {
+            "Pro": 1.0
+          },
+          "product_module_distribution": {
+            "Task Management": 1.0
+          },
+          "trend_status": "stable"
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "n_total": 150,
+    "n_assigned": 84,
+    "coverage": 0.56,
+    "unclustered_percentage": 0.43999999999999995,
+    "n_themed_records_evaluated": 69,
+    "cluster_purity": 0.9230769230769231,
+    "adjusted_rand_index": 0.3828163782092399,
+    "normalized_mutual_information": 0.6964261836148633,
+    "pairwise_precision": 0.8495575221238938,
+    "pairwise_recall": 0.3609022556390977,
+    "pairwise_f1": 0.5065963060686015,
+    "fragmented_true_themes": [
+      "Confusing billing charges",
+      "Login failures after an update",
+      "Mobile app crashes"
+    ],
+    "n_fragmented_true_themes": 3,
+    "mixed_predicted_themes": [],
+    "n_mixed_predicted_themes": 0
+  }
+}

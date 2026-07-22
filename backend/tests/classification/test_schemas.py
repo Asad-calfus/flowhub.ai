@@ -68,3 +68,26 @@ def test_classifier_input_rejects_out_of_range_rating():
 def test_classifier_input_rejects_unknown_field():
     with pytest.raises(ValidationError):
         ClassifierInput(feedback_text="hi", sentiment="Negative")
+
+
+def test_from_record_matches_source_and_tier_case_insensitively():
+    record = {"feedback_text": "hi", "source": "SUPPORT TICKET", "customer_tier": "pro"}
+    result = ClassifierInput.from_record(record)
+    assert result.source == "Support ticket"
+    assert result.customer_tier == "Pro"
+
+
+def test_from_record_never_raises_on_unrecognized_source_or_tier():
+    """Real-world CSVs won't match our controlled vocabulary - from_record must degrade to
+    None instead of raising, since a single record's messy metadata must never crash a
+    classification run (batch or single)."""
+    record = {"feedback_text": "hi", "source": "web widget", "customer_tier": "gold"}
+    result = ClassifierInput.from_record(record)
+    assert result.source is None
+    assert result.customer_tier is None
+
+
+def test_from_record_never_raises_on_unparsable_rating():
+    record = {"feedback_text": "hi", "rating": "not-a-number"}
+    result = ClassifierInput.from_record(record)
+    assert result.rating is None

@@ -12,12 +12,22 @@ PRICING: dict[str, tuple[float, float]] = {
     "gpt-4o": (2.50, 10.00),
     "claude-haiku-4-5-20251001": (1.00, 5.00),
     "claude-sonnet-5": (3.00, 15.00),
+    "llama-3.1-8b-instant": (0.05, 0.08),
 }
 
 # Recommended cost-efficient default per provider.
 RECOMMENDED_MODEL = {
     "openai": "gpt-4o-mini",
     "anthropic": "claude-haiku-4-5-20251001",
+    "groq": "llama-3.1-8b-instant",
+}
+
+# Which env var holds the API key for each provider - shared by the /status and
+# /analysis/estimate endpoints so "is a key configured" is checked the same way everywhere.
+API_KEY_ENV_VARS = {
+    "openai": "OPENAI_API_KEY",
+    "anthropic": "ANTHROPIC_API_KEY",
+    "groq": "GROQ_API_KEY",
 }
 
 

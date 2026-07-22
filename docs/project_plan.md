@@ -28,14 +28,25 @@ do the job (classification, weekly-summary prose).
 | 3 | Embeddings, similarity search, and context matching | Complete |
 | 4 | Theme clustering and trend detection | Complete |
 | 5 | PostgreSQL and FastAPI layer | Complete |
-| 6 | Weekly insight generation | Planned |
-| 7 | Frontend dashboard | Planned |
-| 8 | Background processing (Celery + Redis) | Planned |
-| 9 | Human corrections and final evaluation | Planned |
-| 10 | Deployment and documentation | Planned |
+| 6 | Weekly insight generation | Complete |
+| 7 | Frontend dashboard | Complete |
+| 8 | Background processing (Celery + Redis) | Deferred to v2 |
+| 9 | Human corrections and final evaluation | Deferred to v2 |
+| 10 | Deployment and documentation | Deferred to v2 |
 
 Each phase gets its own changelog entry (or several) on completion; this table's Status
 column is the source of truth for "what phase are we in."
+
+## v1 scope freeze (2026-07-21)
+
+**Phases 1–7 are v1** - a complete, working prototype: synthetic dataset → classification →
+retrieval/context-matching → theme clustering → Postgres/FastAPI backend → weekly reports →
+Next.js dashboard, each with its own evaluation against the gold set. Explicit decision, not
+an oversight: Phases 8–10 (Celery/Redis background processing, human-correction feedback
+loop, CI/CD and deployment hardening) are deferred to a v2 effort. Nothing about v1's
+architecture assumes v2 is coming - the API is synchronous by design, and adding a job queue
+later is additive (new endpoints/workers), not a rework of what exists. See each phase's
+entry above and `docs/changelog/` for what "complete" means concretely per phase.
 
 ## MVP features
 

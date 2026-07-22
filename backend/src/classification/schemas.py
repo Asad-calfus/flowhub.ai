@@ -4,7 +4,7 @@ classification pipeline. Labels below mirror docs/taxonomy.md exactly - do not
 add or rename values here without updating that document too.
 """
 
-from typing import Literal, Optional
+from typing import Literal, Optional, get_args
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -52,6 +52,12 @@ Source = Literal[
 ]
 
 CustomerTier = Literal["Free", "Pro", "Enterprise"]
+
+# Case-insensitive lookup so real-world CSVs ("support ticket", "PRO", ...) still classify
+# instead of raising a validation error - unrecognized values just fall back to None
+# (no source/tier context for that record) rather than crashing.
+_SOURCE_LOOKUP: dict[str, str] = {s.lower(): s for s in get_args(Source)}
+_TIER_LOOKUP: dict[str, str] = {t.lower(): t for t in get_args(CustomerTier)}
 
 # feedback_type -> category roll-up, as defined in docs/data_dictionary.md
 CATEGORY_MAP: dict[str, str] = {
@@ -134,17 +140,30 @@ class ClassifierInput(BaseModel):
 
     @classmethod
     def from_record(cls, record: dict) -> "ClassifierInput":
-        """Build a ClassifierInput from a raw dict, stripping any leakage fields first."""
+        """Build a ClassifierInput from a raw dict, stripping any leakage fields first.
+
+        Real-world data (CSV imports especially) won't reliably match our controlled
+        vocabulary's exact casing/wording for `source`/`customer_tier` - those are matched
+        case-insensitively, and anything unrecognized degrades to None instead of raising,
+        since a classification run must never crash on a single record's messy metadata.
+        """
         cleaned = strip_leakage_fields(record)
         # normalize empty-string optionals (as read from CSV) to None
         for key in ("source", "customer_tier", "product_version", "language"):
             if cleaned.get(key) == "":
                 cleaned[key] = None
+        if cleaned.get("source"):
+            cleaned["source"] = _SOURCE_LOOKUP.get(str(cleaned["source"]).strip().lower())
+        if cleaned.get("customer_tier"):
+            cleaned["customer_tier"] = _TIER_LOOKUP.get(str(cleaned["customer_tier"]).strip().lower())
         rating = cleaned.get("rating")
         if rating in ("", None):
             cleaned["rating"] = None
         else:
-            cleaned["rating"] = int(rating)
+            try:
+                cleaned["rating"] = int(float(rating))
+            except (TypeError, ValueError):
+                cleaned["rating"] = None
         return cls(**cleaned)
 
 

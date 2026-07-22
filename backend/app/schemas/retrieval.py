@@ -1,6 +1,6 @@
-from typing import Optional
+from typing import Literal, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.retrieval.schemas import ContextStatus, ContextType
 
@@ -33,3 +33,27 @@ class ContextMatchSummary(BaseModel):
     status: ContextStatus
     matched_context_id: Optional[str] = None
     candidates: list[ContextMatchOut]
+
+
+class RetrievalBatchRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    feedback_ids: Optional[list[str]] = Field(
+        default=None,
+        description="Specific feedback IDs to run context-matching for; omit to run it for "
+        "every feedback record in the workspace that has no context-match rows yet.",
+    )
+    top_k: int = 5
+
+
+class RetrievalBatchResultItem(BaseModel):
+    feedback_id: str
+    status: Literal["success", "failed"]
+    error: Optional[str] = None
+
+
+class RetrievalBatchResponse(BaseModel):
+    requested: int
+    succeeded: int
+    failed: int
+    results: list[RetrievalBatchResultItem]

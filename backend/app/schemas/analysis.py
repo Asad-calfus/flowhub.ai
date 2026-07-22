@@ -55,3 +55,14 @@ class BatchAnalysisResponse(BaseModel):
     failed: int
     skipped: int
     results: list[BatchAnalysisResultItem]
+
+
+class CostEstimateOut(BaseModel):
+    """Pre-flight estimate for running live LLM classification over every pending
+    (unclassified) feedback record in the workspace - never an actual spend."""
+
+    pending_count: int
+    provider: str
+    model: str
+    configured: bool  # whether an API key is set for `provider` - if false, a live run would 503
+    estimated_cost_usd: Optional[float] = None
